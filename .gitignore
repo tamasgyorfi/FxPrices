@@ -1,0 +1,8 @@
+.metadata/**
+**/.settings/**
+**/.cache
+**/.classpath
+**/.project
+**/*.jar
+**/target/**
+**/activemq-data/**
