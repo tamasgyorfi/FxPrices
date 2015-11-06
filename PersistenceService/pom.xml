@@ -4,6 +4,8 @@
 	<groupId>FxPrices</groupId>
 	<artifactId>PersistenceService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+
+
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
@@ -13,6 +15,15 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<finalName>persistence-service</finalName>
 				</configuration>
 			</plugin>
 		</plugins>
