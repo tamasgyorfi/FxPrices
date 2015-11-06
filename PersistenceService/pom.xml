@@ -43,7 +43,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>FxPricer</groupId>
+			<groupId>FxPrices</groupId>
 			<artifactId>StaticDataServiceClient</artifactId>
 			<version>0.0.1</version>
 		</dependency>
