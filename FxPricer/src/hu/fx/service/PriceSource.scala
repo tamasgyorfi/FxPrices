@@ -6,6 +6,6 @@ import java.net.URL
 import org.slf4s.LoggerFactory
 
 trait PriceSource {
-  protected def getMostFreshQuotes: Unit => List[Quote]
+  def getMostFreshQuotes: Unit => List[Quote]
   def getSchedulingInformation: SchedulingInformation
 }

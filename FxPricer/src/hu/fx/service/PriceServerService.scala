@@ -6,21 +6,33 @@ import hu.fx.service.yahoo.YahooPriceService
 import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
 
-class PriceServerService extends PricesServer {
-  
+class PriceServerService(priceSources: List[PriceSource]) extends PricesServer {
+
+  lazy val sender = RequestSender(ActiveMQHandler())
+
   def getAllCurrencies(): List[Quote] = {
-    val quotesFunction = YahooPriceService().getMostFreshQuotes
-    val quotes = measureFunctionRuntime(quotesFunction, ())("YahooPriceService.getMostFreshQuotes()")
-    val sender = RequestSender(ActiveMQHandler())
-    
+
+    val allQuotes = for {
+      priceSource <- priceSources
+      val quotesFunction = priceSource.getMostFreshQuotes
+      val quotes = measureFunctionRuntime(quotesFunction, ())(priceSource.getClass + ".getMostFreshQuotes()")
+
+    } yield quotes
+
+    allQuotes.flatten
+  }
+
+  def saveQuotes(quotes: List[Quote]) {
+    val quotes = getAllCurrencies()
     sender.sendPersistenceRequest(quotes)
-    
-    quotes
   }
 }
 
-object Test  {
-  def main (args : Array[String]) = {
-    val x = new PriceServerService().getAllCurrencies()
+object Test {
+  def main(args: Array[String]) = {
+    val sources: List[PriceSource] = List(YahooPriceService())
+    val p = new PriceServerService(sources)
+    val currencies = p.getAllCurrencies()
+    p.saveQuotes(currencies)
   }
 }
