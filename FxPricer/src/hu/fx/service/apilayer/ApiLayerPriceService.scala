@@ -1,16 +1,14 @@
 package hu.fx.service.apilayer
 
-import hu.fx.service.PriceSource
 import hu.fx.service._
+import hu.fx.service.api.PriceSource
 import hu.fx.service.api.Quote
+import hu.fx.service.apilayer.config.ApiLayerPriceSource
+import hu.fx.service.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.apilayer.json.QuoteJsonParser
-import java.net.URL
-import scala.io.Source
-import hu.fx.service.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.dates.DatesSupplier
-import hu.fx.service.apilayer.config.ApiLayerPriceSource
-import hu.fx.service.SchedulingInformation
-import scala.actors.threadpool.TimeUnit
+import hu.fx.service.main.RequestQuote
+import hu.fx.service.main.QuoteReply
 
 class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource{
 
@@ -19,5 +17,10 @@ class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLaye
     (Unit => QuoteJsonParser(DatesSupplier).parseJsonForQuotes(jsonFromApiLayer))
   }
   
-  def getSchedulingInformation = SchedulingInformation(1, TimeUnit.HOURS)
+  def receive = {
+    case RequestQuote => {
+      val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("ApiLayerPriceService.getMostFreshQuotes()")
+      sender ! new QuoteReply(quotes, PROVIDER)
+    }
+  }
 }

@@ -1,16 +1,13 @@
 package hu.fx.service.yahoo
 
-import hu.fx.service._
-import hu.fx.service.api.Quote
-import java.net.URL
-import scala.io.Source
 import scala.App
+
+import hu.fx.service._
+import hu.fx.service.api.PriceSource
+import hu.fx.service.api.Quote
 import hu.fx.service.yahoo.config.YahooPriceSource
-import hu.fx.service.PriceSource
-import hu.fx.service.SchedulingInformation
-import scala.actors.threadpool.TimeUnit
-import org.slf4s.Logger
-import org.slf4s.LoggerFactory
+import hu.fx.service.main.RequestQuote
+import hu.fx.service.main.QuoteReply
 
 class YahooPriceService extends YahooPriceSource with PriceSource {
 
@@ -18,9 +15,10 @@ class YahooPriceService extends YahooPriceSource with PriceSource {
     (Unit => QuoteXmlParser().parse(retrievePricesAsString(YAHOO_PRICES)))
   }
 
-  def getSchedulingInformation = SchedulingInformation(5, TimeUnit.MINUTES)
-}
-
-object YahooPriceService {
-  def apply() = new YahooPriceService
+  def receive = {
+    case RequestQuote => {
+      val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("YahooPriceService.getMostFreshQuotes()")
+      sender ! new QuoteReply(quotes, PROVIDER)
+    }
+  }
 }
