@@ -24,12 +24,7 @@ object MessageReceiverFactory {
   def main(args: Array[String]) = {
     val receiver = {
       MessageReceiverFactory(ReceiverType.LOGGING).listenOnBackgroundThread
-      val scanner = new Scanner(System.in)
       do {
-        val input = scanner.next()
-
-        if (input.equals("exit")) System.exit(0)
-        else println("Read: " + input)
       } while (true)
     }
   }
