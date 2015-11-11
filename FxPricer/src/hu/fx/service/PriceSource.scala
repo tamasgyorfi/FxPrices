@@ -7,5 +7,4 @@ import org.slf4s.LoggerFactory
 
 trait PriceSource {
   def getMostFreshQuotes: Unit => List[Quote]
-  def getSchedulingInformation: SchedulingInformation
 }

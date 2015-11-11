@@ -27,12 +27,3 @@ class PriceServerService(priceSources: List[PriceSource]) extends PricesServer {
     sender.sendPersistenceRequest(quotes)
   }
 }
-
-object Test {
-  def main(args: Array[String]) = {
-    val sources: List[PriceSource] = List(YahooPriceService())
-    val p = new PriceServerService(sources)
-    val currencies = p.getAllCurrencies()
-    p.saveQuotes(currencies)
-  }
-}
