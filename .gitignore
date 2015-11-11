@@ -6,3 +6,5 @@
 **/*.jar
 **/target/**
 **/activemq-data/**
+**/*.log
+
