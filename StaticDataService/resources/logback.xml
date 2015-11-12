@@ -1,8 +1,9 @@
 <configuration>
 
+	<property resource="local.properties" />
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>staticdata-service.log</file>
+		<file>${log.dir}/staticdata-service.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>staticdata-service_%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>

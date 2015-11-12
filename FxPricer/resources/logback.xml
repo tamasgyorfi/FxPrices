@@ -1,8 +1,10 @@
 <configuration>
 
+	<property resource="props.properties" />
+
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>prices-service.log</file>
+		<file>${log.dir}/prices-service.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>prices-service_%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>

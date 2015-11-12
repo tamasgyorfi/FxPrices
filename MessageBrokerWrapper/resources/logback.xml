@@ -1,8 +1,9 @@
 <configuration>
 
+	<property resource="props.properties" />
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>messagebroker-wrapper-service.log</file>
+		<file>${log.dir}/messagebroker-wrapper-service.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>messagebroker-wrapper-service_%d{yyyy-MM-dd}.%i.log
 			</fileNamePattern>
