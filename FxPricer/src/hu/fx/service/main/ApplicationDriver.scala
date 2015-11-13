@@ -1,16 +1,17 @@
 package hu.fx.service.main
 
+import scala.collection.parallel.ParMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import akka.actor.Actor
 import akka.actor.ActorSystem
 import akka.actor.Props
-import hu.fx.service.apilayer.ApiLayerPriceService
-import hu.fx.service.yahoo.YahooPriceService
+import akka.actor.actorRef2Scala
+import hu.fx.service.api.Quote
 import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
-import scala.collection.parallel.ParMap
-import hu.fx.service.api.Quote
+import hu.fx.service.providers.yahoo.YahooPriceService
+import hu.fx.service.providers.apilayer.ApiLayerPriceService
 
 trait AkkaSystem {
   val system = ActorSystem("FxPrices")

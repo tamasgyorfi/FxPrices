@@ -2,7 +2,6 @@ package hu.fx.service
 
 import hu.fx.service.api.PricesServer
 import hu.fx.service.api.Quote
-import hu.fx.service.yahoo.YahooPriceService
 import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
 
