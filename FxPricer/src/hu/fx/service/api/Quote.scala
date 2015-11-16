@@ -9,11 +9,12 @@ trait Quote {
 
   def ccy1 = "USD"
   override def toString(): String = {
-    "Quote: " + this.getClass.getSimpleName + ", " + ccy1 + ", " + ccy2 + ", " + price + ", " + quoteUnit + ", " + timestamp
+    "Quote: " + this.getClass.getSimpleName + ", " + ccy1 + ", " + ccy2 + ", " + price + ", " + quoteUnit + ", " + timestamp + ", " + source
+
   }
 
-  override def equals(that: Any): Boolean = that match {
-    case that: Quote => {
+  override def equals(that: Any): Boolean = that match{
+    case q:Quote => {
       val quote = that.asInstanceOf[Quote]
       quote.ccy2.equals(ccy2) && quote.source.equals(source)
     }
@@ -29,6 +30,12 @@ case class FxQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, 
 }
 
 case class PmQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, val timestamp: String, val source: String) extends Quote {
+}
+
+case class SimpleQuote(val ccy2: String, val source: String) extends Quote {
+  def quoteUnit = 1
+  def price = 1
+  def timestamp = ""
 }
 
 case object EmptyQuote extends Quote {

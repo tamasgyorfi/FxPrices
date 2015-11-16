@@ -7,7 +7,7 @@ import hu.fx.service.api.PriceSource
 import hu.fx.service.api.Quote
 import hu.fx.service.yahoo.config.YahooPriceSource
 import hu.fx.service.main.RequestQuote
-import hu.fx.service.main.QuoteReply
+import hu.fx.service.main.QuotesRefresh
 
 class YahooPriceService extends YahooPriceSource with PriceSource {
 
@@ -18,7 +18,7 @@ class YahooPriceService extends YahooPriceSource with PriceSource {
   def receive = {
     case RequestQuote => {
       val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("YahooPriceService.getMostFreshQuotes()")
-      sender ! new QuoteReply(quotes, PROVIDER)
+      sender ! new QuotesRefresh(quotes, PROVIDER)
     }
   }
 }

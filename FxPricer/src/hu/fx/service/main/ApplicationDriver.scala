@@ -12,10 +12,12 @@ import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
 import hu.fx.service.providers.yahoo.YahooPriceService
 import hu.fx.service.providers.apilayer.ApiLayerPriceService
+import hu.fx.service.api.SimpleQuote
+import hu.fx.service.api.EmptyQuote
 
 trait AkkaSystem {
   val system = ActorSystem("FxPrices")
-  
+
   val appDriver = system.actorOf(Props[ApplicationDriver], name = "AppDriver")
   val yahooActor = system.actorOf(Props[YahooPriceService], name = "YahooPriceService")
   val apiLayerActor = system.actorOf(Props(new ApiLayerPriceService("")), name = "ApiLayerPriceService")
@@ -28,21 +30,34 @@ trait AkkaSystem {
 class ApplicationDriver extends Actor with AkkaSystem {
 
   lazy val messageSender = RequestSender(ActiveMQHandler())
-  val freshQuotes: ParMap[String, List[Quote]] = ParMap.empty
-  
+  protected val freshQuotes: ParMap[String, List[Quote]] = ParMap.empty
+
   def receive = {
     case ApplicationStart => {
-      actorList.foreach {actor => system.scheduler.schedule(0 seconds, actor.timing, actor.actorRef, RequestQuote) }
+      actorList.foreach { actor => system.scheduler.schedule(0 seconds, actor.timing, actor.actorRef, RequestQuote) }
       context.become(start)
     }
   }
 
   def start: Receive = {
-    case QuoteReply(quotes, senderName) => {
+    case QuotesRefresh(quotes, senderName) => {
       messageSender sendPersistenceRequest quotes
-      freshQuotes updated(senderName, quotes)
+      freshQuotes updated (senderName, quotes)
     }
-    case QuoteApiRequest => {}
+
+    case AllQuotesApiRequest => {
+      sender ! AllQuotesApiReply(Map[String, List[Quote]]() ++ freshQuotes)
+    }
+
+    case QuoteApiRequest(counterCurrency) => {
+      val result = for {
+        source <- freshQuotes.keys
+        val searchedQuote = SimpleQuote(counterCurrency, source)
+        val quotesBySource = freshQuotes get(source) get
+      } yield (quotesBySource.filter { quote => quote equals(searchedQuote) })
+
+      sender ! QuoteApiReply(result.toList.flatten)
+    }
   }
 }
 

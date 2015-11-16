@@ -8,7 +8,7 @@ import hu.fx.service.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.apilayer.json.QuoteJsonParser
 import hu.fx.service.dates.DatesSupplier
 import hu.fx.service.main.RequestQuote
-import hu.fx.service.main.QuoteReply
+import hu.fx.service.main.QuotesRefresh
 
 class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource{
 
@@ -20,7 +20,7 @@ class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLaye
   def receive = {
     case RequestQuote => {
       val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("ApiLayerPriceService.getMostFreshQuotes()")
-      sender ! new QuoteReply(quotes, PROVIDER)
+      sender ! new QuotesRefresh(quotes, PROVIDER)
     }
   }
 }
