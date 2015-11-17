@@ -38,7 +38,7 @@ class ApplicationDriverTest extends TestKit(ActorSystem("testSystem")) with Word
 
         restActorRef ! ApplicationStart
         restActorRef ! QuoteApiRequest("HUF")
-        expectMsg(QuoteApiReply(List(FxQuote("HUF", 1, 0, "", "APILAYER"), FxQuote("HUF", 1, 0, "", "YAHOO"))))
+        expectMsg(QuoteApiReply(List(FxQuote("HUF", 1, 0, "", "YAHOO"), FxQuote("HUF", 1, 0, "", "APILAYER"))))
       }
     }
   }
