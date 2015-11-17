@@ -50,7 +50,7 @@ class ApplicationDriver extends Actor with AkkaSystem {
     }
 
     case QuoteApiRequest(counterCurrency) => {
-      val result = for ((source, quotes)<-freshQuotes) yield quotes.filter {quote => {quote equals(new SimpleQuote(counterCurrency, source))}
+      val result = for ((source, quotes)<-freshQuotes) yield quotes.filter {quote => {quote equals(new SimpleQuote(counterCurrency, source))}}
       sender ! QuoteApiReply(result.toList.flatten)
     }
   }
