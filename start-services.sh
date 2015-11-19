@@ -11,5 +11,5 @@ echo "##### Starting Persistence Service"
 scala -classpath target/persistence-service.jar hu.persistence.MessageReceiverFactory &
 cd ../FxPricer
 echo "##### Starting Price service"
-scala -classpath target/prices-service.jar hu.fx.service.main.PricesServer
+scala -classpath target/prices-service.jar hu.fx.service.main.Server
 cd ..

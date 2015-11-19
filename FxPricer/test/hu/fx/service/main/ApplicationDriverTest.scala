@@ -17,7 +17,7 @@ trait TestData {
   val quotes2 = List(FxQuote("EUR", 1, 1, "", "APILAYER"), FxQuote("HUF", 1, 1, "", "APILAYER"), FxQuote("ROL", 1, 1, "", "APILAYER"))
 }
 
-class FakeApplicationDriver extends ApplicationDriver with TestData {
+class FakeApplicationDriver extends ApplicationDriverActor with TestData {
   override def receive = {
     case ApplicationStart => {
       freshQuotes.updated("YAHOO", quotes1)

@@ -15,26 +15,23 @@ import hu.fx.service.providers.apilayer.ApiLayerPriceService
 import hu.fx.service.api.SimpleQuote
 import hu.fx.service.api.EmptyQuote
 
-trait AkkaSystem {
-  val system = ActorSystem("FxPrices")
-
-  val appDriver = system.actorOf(Props[ApplicationDriver], name = "AppDriver")
-  val yahooActor = system.actorOf(Props[YahooPriceService], name = "YahooPriceService")
-  val apiLayerActor = system.actorOf(Props(new ApiLayerPriceService("")), name = "ApiLayerPriceService")
+trait SourceSystems extends Actor {
+  val yahooActor = context.actorOf(Props[YahooPriceService], name = "YahooPriceService")
+  val apiLayerActor = context.actorOf(Props(new ApiLayerPriceService("")), name = "ApiLayerPriceService")
 
   val actorList: List[ActorTimingAssoc] = {
     List(new ActorTimingAssoc(yahooActor, 5 seconds))
   }
 }
 
-class ApplicationDriver extends Actor with AkkaSystem {
+class ApplicationDriverActor extends SourceSystems {
 
-  lazy val messageSender = RequestSender(ActiveMQHandler())
+  private lazy val messageSender = RequestSender(ActiveMQHandler())
   protected val freshQuotes: ParMap[String, List[Quote]] = ParMap.empty
 
   def receive = {
     case ApplicationStart => {
-      actorList.foreach { actor => system.scheduler.schedule(0 seconds, actor.timing, actor.actorRef, RequestQuote) }
+      actorList.foreach { actor => context.system.scheduler.schedule(0 seconds, actor.timing, actor.actorRef, RequestQuote) }
       context.become(start)
     }
   }
@@ -50,14 +47,8 @@ class ApplicationDriver extends Actor with AkkaSystem {
     }
 
     case QuoteApiRequest(counterCurrency) => {
-      val result = for ((source, quotes)<-freshQuotes) yield quotes.filter {quote => {quote equals(new SimpleQuote(counterCurrency, source))}}
+      val result = for ((source, quotes) <- freshQuotes) yield quotes.filter { quote => { quote equals (new SimpleQuote(counterCurrency, source)) } }
       sender ! QuoteApiReply(result.toList.flatten)
     }
-  }
-}
-
-object PricesServer extends AkkaSystem {
-  def main(args: Array[String]) = {
-    appDriver ! ApplicationStart
   }
 }
