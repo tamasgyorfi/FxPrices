@@ -6,7 +6,7 @@ import javax.jms.Session
 import javax.jms.Destination
 import javax.jms.MessageProducer
 import hu.staticdataservice.client.HttpClient
-import hu.fx.service.ParamsSupplier
+import hu.fx.service.config.ParamsSupplier
 
 class ActiveMQHandler extends JmsHandler {
 

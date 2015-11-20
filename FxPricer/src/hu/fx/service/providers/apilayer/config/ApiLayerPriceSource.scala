@@ -1,6 +1,6 @@
 package hu.fx.service.providers.apilayer.config
 
-import hu.fx.service.ParamsSupplier
+import hu.fx.service.config.ParamsSupplier
 
 trait ApiLayerPriceSource {
 

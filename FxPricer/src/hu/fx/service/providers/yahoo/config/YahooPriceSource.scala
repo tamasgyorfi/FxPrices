@@ -1,6 +1,6 @@
 package hu.fx.service.providers.yahoo.config
 
-import hu.fx.service.ParamsSupplier
+import hu.fx.service.config.ParamsSupplier
 
 trait YahooPriceSource {
   val YAHOO_PRICES = ParamsSupplier.getParam("service.yahoo.prices")

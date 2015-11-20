@@ -10,6 +10,7 @@ import org.slf4s.LoggerFactory
 import scala.concurrent.ExecutionContext.Implicits.global
 import akka.util.Timeout
 import scala.concurrent.duration.DurationInt
+import hu.fx.service.config.ParamsSupplier
 
 trait AkkaSystem {
   implicit val system = ActorSystem("StaticDataService")
@@ -23,10 +24,16 @@ class Server extends AkkaSystem {
   val logger = LoggerFactory.getLogger(this.getClass)
 
   def bindService() = {
-    val future = IO(Http) ? Http.Bind(restServer, "localhost", 8081)
+    val future = IO(Http) ? Http.Bind(restServer,
+      ParamsSupplier.getParam("fxpricer.rest.host"),
+      ParamsSupplier.getParam("fxpricer.rest.port").toInt)
+
     Await.ready(future, timeout.duration) map {
-      case Http.Bound(host) => logger info s"Service successfully bound on "
-      case message          => { logger error s"Error binding service. Message received: $message. Exiting."; System.exit(1) }
+      case Http.Bound(host) => logger info s"Service successfully bound"
+      case message => {
+        logger error s"Error binding service. Message received: $message. Exiting."
+        System.exit(1)
+      }
     }
   }
 }
