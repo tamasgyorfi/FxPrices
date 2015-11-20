@@ -7,6 +7,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>CommonUtils</module>
 		<module>StaticDataService</module>
 		<module>StaticDataServiceClient</module>
 		<module>MessageBrokerWrapper</module>

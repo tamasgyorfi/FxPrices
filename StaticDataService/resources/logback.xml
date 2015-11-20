@@ -1,6 +1,6 @@
 <configuration>
 
-	<property resource="local.properties" />
+	<property resource="props_default.properties" />
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.dir}/staticdata-service.log</file>

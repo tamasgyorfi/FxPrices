@@ -4,7 +4,7 @@ scala -classpath target/staticdata-service.jar hu.staticdata.StaticDataServer &
 sleep 15
 cd ../MessageBrokerWrapper
 echo "##### Starting MQWrapper service"
-scala -classpath target/messagebroker-service.jar hu.messagebroker.ActiveMQBrokerStarter > /dev/null &
+scala -classpath target/messagebroker-service.jar hu.messagebroker.ActiveMQBrokerStarter > a.txt &
 sleep 5
 cd ../PersistenceService
 echo "##### Starting Persistence Service"

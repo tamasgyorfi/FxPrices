@@ -34,7 +34,7 @@ class ApplicationDriverTest extends TestKit(ActorSystem("testSystem")) with Word
 
   "The driver actor" should {
     "return all quotes where ccy2 matches for QuoteApiRequest" in {
-      within(500 millis) {
+      within(1000 millis) {
 
         restActorRef ! ApplicationStart
         restActorRef ! QuoteApiRequest("HUF")
@@ -45,7 +45,7 @@ class ApplicationDriverTest extends TestKit(ActorSystem("testSystem")) with Word
 
   "The driver actor" should {
     "return all quotes for AllQuotesApiRequest" in {
-      within(500 millis) {
+      within(1000 millis) {
 
         restActorRef ! ApplicationStart
         restActorRef ! AllQuotesApiRequest

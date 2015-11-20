@@ -1,11 +1,11 @@
 <configuration>
 
-	<property resource="props.properties" />
+	<property resource="props_default.properties" />
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.dir}/persistence-service.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>persistence-service_%d{yyyy-MM-dd}.%i.log
+			<fileNamePattern>persistence-service_%d{yyyy-MM-dd}.log
 			</fileNamePattern>
 
 			<timeBasedFileNamingAndTriggeringPolicy
