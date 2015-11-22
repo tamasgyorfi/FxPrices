@@ -1,1 +1,1 @@
-web: java -classpath target/staticdata-service.jar hu.staticdata.StaticDataServer
+web: target/staticdata-service.jar hu.staticdata.StaticDataServer
