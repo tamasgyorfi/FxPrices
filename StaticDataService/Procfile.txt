@@ -1,1 +1,0 @@
-web: target/staticdata-service.jar hu.staticdata.StaticDataServer
