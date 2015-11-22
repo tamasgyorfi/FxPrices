@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -cp target/staticdata-service.jar hu.staticdata.StaticDataServer
+worker: java -classpath target/staticdata-service.jar hu.staticdata.StaticDataServer
