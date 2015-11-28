@@ -38,8 +38,8 @@ class ApplicationDriverActor extends SourceSystems {
 
   def start: Receive = {
     case QuotesRefresh(quotes, senderName) => {
-      messageSender sendPersistenceRequest quotes
       freshQuotes updated (senderName, quotes)
+      messageSender sendPersistenceRequest quotes
     }
 
     case AllQuotesApiRequest => {
