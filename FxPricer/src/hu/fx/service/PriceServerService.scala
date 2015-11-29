@@ -1,9 +1,10 @@
 package hu.fx.service
 
 import hu.fx.service.api.PricesServer
-import hu.fx.service.api.Quote
 import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
+import hu.fx.data.Quote
+import hu.fx.service.providers.PriceSource
 
 class PriceServerService(priceSources: List[PriceSource]) extends PricesServer {
 

@@ -1,9 +1,9 @@
 package hu.fx.service.persistencerequest
 
-import hu.fx.service.api.Quote
 import hu.fx.service.persistencerequest.jms.JmsHandler
 import javax.jms.JMSException
 import org.slf4s.LoggerFactory
+import hu.fx.data.Quote
 
 class RequestSender(jmsHandler: JmsHandler) {
 

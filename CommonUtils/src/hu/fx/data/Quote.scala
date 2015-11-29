@@ -1,4 +1,4 @@
-package hu.fx.service.api
+package hu.fx.data
 
 trait Quote {
   def ccy2: String

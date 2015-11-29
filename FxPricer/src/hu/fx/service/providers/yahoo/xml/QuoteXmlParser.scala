@@ -2,8 +2,8 @@ package hu.fx.service.providers.yahoo.xml
 
 import scala.xml.Node
 import scala.xml.XML
-import hu.fx.service.api.Quote
 import hu.fx.service.providers.yahoo.config.YahooPriceSource
+import hu.fx.data.Quote
 
 class QuoteXmlParser extends YahooPriceSource {
   def parse(source: String): List[Quote] = {

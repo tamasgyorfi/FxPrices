@@ -2,10 +2,9 @@ package hu.fx.service.providers.yahoo
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
-import hu.fx.service.api.FxQuote
-import hu.fx.service.api.FxQuote
-import hu.fx.service.api.PmQuote
 import hu.fx.service.providers.yahoo.xml.QuoteXmlParser
+import hu.fx.data.PmQuote
+import hu.fx.data.FxQuote
 
 trait TestData {
   val header = "<list version=\"1.0\"><meta><type>resource-list</type></meta><resources start=\"0\" count=\"173\">"

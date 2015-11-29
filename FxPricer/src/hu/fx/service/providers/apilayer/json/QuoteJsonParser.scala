@@ -1,11 +1,11 @@
 package hu.fx.service.providers.apilayer.json
 
-import hu.fx.service.api.FxQuote
-import hu.fx.service.api.Quote
 import hu.fx.service.dates.DateComponent
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.json.JsonParser
 import hu.fx.service.providers.apilayer.config.ApiLayerPriceSource
+import hu.fx.data.Quote
+import hu.fx.data.FxQuote
 
 class QuoteJsonParser(dateComponent: DateComponent) extends ApiLayerPriceSource {
   def parseJsonForQuotes(source: String): List[Quote] = {

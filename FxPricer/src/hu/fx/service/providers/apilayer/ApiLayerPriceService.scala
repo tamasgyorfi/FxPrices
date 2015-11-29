@@ -2,12 +2,12 @@ package hu.fx.service.providers.apilayer
 
 import hu.fx.service._
 import hu.fx.service.api.PriceSource
-import hu.fx.service.api.Quote
 import hu.fx.service.dates.DatesSupplier
 import hu.fx.service.main.RequestQuote
 import hu.fx.service.main.QuotesRefresh
 import hu.fx.service.providers.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.providers.apilayer.json.QuoteJsonParser
+import hu.fx.data.Quote
 
 class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource{
 

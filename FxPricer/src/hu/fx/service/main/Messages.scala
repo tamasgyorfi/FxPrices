@@ -1,6 +1,6 @@
 package hu.fx.service.main
 
-import hu.fx.service.api.Quote
+import hu.fx.data.Quote
 
 abstract class Message
 

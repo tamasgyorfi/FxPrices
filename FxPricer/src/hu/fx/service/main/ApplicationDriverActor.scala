@@ -3,17 +3,16 @@ package hu.fx.service.main
 import scala.collection.parallel.ParMap
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
+
 import akka.actor.Actor
-import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.actorRef2Scala
-import hu.fx.service.api.Quote
+import hu.fx.data.Quote
+import hu.fx.data.SimpleQuote
 import hu.fx.service.persistencerequest.RequestSender
 import hu.fx.service.persistencerequest.jms.ActiveMQHandler
-import hu.fx.service.providers.yahoo.YahooPriceService
 import hu.fx.service.providers.apilayer.ApiLayerPriceService
-import hu.fx.service.api.SimpleQuote
-import hu.fx.service.api.EmptyQuote
+import hu.fx.service.providers.yahoo.YahooPriceService
 
 trait SourceSystems extends Actor {
   val yahooActor = context.actorOf(Props[YahooPriceService], name = "YahooPriceService")

@@ -5,7 +5,7 @@ import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 import hu.fx.service.dates.DateComponent
 import hu.fx.service.providers.apilayer.json.QuoteJsonParser
-import hu.fx.service.api.FxQuote
+import hu.fx.data.FxQuote
 
 object TestDateComponent extends DateComponent {
   def currentDate = new Date(2015, 10, 24)

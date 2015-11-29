@@ -11,6 +11,7 @@
 		<module>StaticDataService</module>
 		<module>StaticDataServiceClient</module>
 		<module>MessageBrokerWrapper</module>
+		<module>SummarizerService</module>
 		<module>PersistenceService</module>
 		<module>FxPricer</module>
 	</modules>

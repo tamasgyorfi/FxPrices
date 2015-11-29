@@ -8,9 +8,9 @@ import akka.actor.actorRef2Scala
 import akka.testkit.ImplicitSender
 import akka.testkit.TestKit
 import scala.concurrent.duration.DurationInt
-import hu.fx.service.api.FxQuote
 import scala.collection.concurrent.RestartException
 import scala.collection.parallel.mutable.ParMap
+import hu.fx.data.FxQuote
 
 trait TestData {
   val quotes1 = List(FxQuote("EUR", 1, 1, "", "YAHOO"), FxQuote("HUF", 1, 1, "", "YAHOO"), FxQuote("ROL", 1, 1, "", "YAHOO"))
