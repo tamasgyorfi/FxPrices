@@ -24,18 +24,27 @@ trait Quote {
   override def hashCode(): Int = {
     31 * ccy2.hashCode() + source.hashCode() + timestamp.hashCode()
   }
+  
+  def withNewPricePrice(price: Double): Quote
 }
 
 case class FxQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, val timestamp: String, val source: String) extends Quote {
+  override def withNewPricePrice(price: Double): Quote = {
+    new FxQuote(ccy2, quoteUnit, price, timestamp, source)
+  }
 }
 
 case class PmQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, val timestamp: String, val source: String) extends Quote {
+  override def withNewPricePrice(price: Double): Quote = {
+    new PmQuote(ccy2, quoteUnit, price, timestamp, source)
+  }
 }
 
 case class SimpleQuote(val ccy2: String, val source: String) extends Quote {
   def quoteUnit = 1
   def price = 1
   def timestamp = ""
+  def withNewPricePrice(price: Double): Quote = this
 }
 
 case object EmptyQuote extends Quote {
@@ -44,4 +53,6 @@ case object EmptyQuote extends Quote {
   def price = throw new IllegalArgumentException
   def timestamp = throw new IllegalArgumentException
   def source = throw new IllegalArgumentException
+  def withNewPricePrice(price: Double): Quote = throw new IllegalArgumentException
+
 }
