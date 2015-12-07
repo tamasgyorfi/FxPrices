@@ -5,8 +5,6 @@ import scala.collection.parallel.mutable.ParMap
 
 class Summarizer {
 
-  private val ROUNDING_SCALE = 10
-  private val ROUNDING_MODE = scala.math.BigDecimal.RoundingMode.HALF_EVEN
   private val averagedQuotes = ParMap[String, List[Quote]]()
 
   def update(provider: String, quotes: List[Quote]): Unit = {
