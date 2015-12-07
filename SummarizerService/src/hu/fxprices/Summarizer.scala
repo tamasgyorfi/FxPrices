@@ -37,7 +37,7 @@ class Summarizer {
     def putOrReplace(key: A, unDefinedCase: => B, definedCase: => B) = {
       map get key match {
         case None        => map + (key, unDefinedCase)
-        case Some(value) => map updated (key, definedCase)
+        case Some(_) => map updated (key, definedCase)
       }
     }
   }
