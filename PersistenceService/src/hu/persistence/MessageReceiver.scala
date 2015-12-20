@@ -1,14 +1,13 @@
 package hu.persistence
 
-import java.util.Scanner
-
-import hu.persistence.requestprocessor.AbstractMessageReceiver
+import hu.monitoring.jms.ActiveMQHandler
+import hu.monitoring.jms.HeartBeatSender
 import hu.persistence.requestprocessor.AbstractMessageReceiver
 import hu.persistence.requestprocessor.LoggingMessageReceiver
 
 object ReceiverType extends Enumeration {
-	type ReceiverType = Value
-			val LOGGING, DATABASE = Value
+  type ReceiverType = Value
+  val LOGGING, DATABASE = Value
 }
 
 object MessageReceiverFactory {
@@ -21,9 +20,15 @@ object MessageReceiverFactory {
     }
   }
 
+  def startMonitoringClient(): Unit = {
+    val heartBeatSender = new HeartBeatSender("PersistenceService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
+    heartBeatSender.start()
+  }
+
   def main(args: Array[String]) = {
     val receiver = {
       MessageReceiverFactory(ReceiverType.LOGGING).listenOnBackgroundThread
+      startMonitoringClient()
       do {
       } while (true)
     }

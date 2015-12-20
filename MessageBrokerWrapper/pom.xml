@@ -15,6 +15,10 @@
 			<plugin>
 				<groupId>net.alchim31.maven</groupId>
 				<artifactId>scala-maven-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
 				<executions>
 					<execution>
 						<id>scala-compile-first</id>
@@ -129,7 +133,12 @@
 			<artifactId>CommonUtils</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>FxPrices</groupId>
+			<artifactId>MonitoringServiceClient</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 </project>

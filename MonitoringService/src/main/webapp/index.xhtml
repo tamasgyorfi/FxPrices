@@ -1,0 +1,33 @@
+<f:view xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>Services dashboard</title>
+		<style>
+body {
+	font-size: 12px;
+}
+
+</style>
+	</h:head>
+	<h:body>
+	<h:outputStylesheet library="css" name="monitoring.css"  />
+		<h:form>
+			<p:panel id="basic" header="Services"
+				footer="Services known to MonitoringService"
+				style="margin-bottom:20px">
+				<ui:repeat var="s" value="#{services.allServices}" varStatus="status">
+					<h:panelGrid columns="2" cellpadding="10" columnClasses="panelAlignment" >
+						<h:outputLabel value="#{s.name} - #{s.lastUpdate}" id ="details"/>
+						<p:poll interval="5" listener="#{s.getServiceDetails}" update="details" />
+					</h:panelGrid>
+				</ui:repeat>
+			</p:panel>
+		</h:form>
+	</h:body>
+</f:view>

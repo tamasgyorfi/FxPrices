@@ -4,6 +4,7 @@ import org.slf4s.LoggerFactory
 import com.mashape.unirest.http.Unirest
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
+import scala.collection.JavaConversions
 
 private object ObjectMapperHolder {
   private def objectMapper = {
@@ -21,6 +22,14 @@ class HttpClient(serviceEndpoint: (String, Int)) {
   val logger = LoggerFactory.getLogger(this.getClass)
   val PARAMS_PATH = "/params"
 
+  def this(host:String, port:Integer) {
+    this(host->port)
+  }
+  
+  def getParametersFor(environment: String, parameters: java.util.List[String]): java.util.Map[String, String] ={
+    JavaConversions.mapAsJavaMap(getParameters(environment, JavaConversions.collectionAsScalaIterable(parameters) toList))
+  }
+  
   def getParameters(environment: String, parameters: List[String]): Map[String, String] = {
     val csvParams = parameters.reduceRight(_ + "," + _)
 

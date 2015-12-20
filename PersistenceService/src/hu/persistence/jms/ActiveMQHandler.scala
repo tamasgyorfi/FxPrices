@@ -1,12 +1,13 @@
 package hu.fx.service.persistencerequest.jms
 
 import org.apache.activemq.ActiveMQConnectionFactory
+
+import hu.persistence.ParamsSupplier
+import hu.persistence.jms.JmsHandler
 import javax.jms.ConnectionFactory
-import javax.jms.Session
 import javax.jms.Destination
-import javax.jms.MessageProducer
 import javax.jms.MessageConsumer
-import hu.fx.service.ParamsSupplier
+import javax.jms.Session
 
 class ActiveMQHandler extends JmsHandler {
 

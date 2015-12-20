@@ -1,4 +1,4 @@
-package hu.fx.service.persistencerequest.jms
+package hu.persistence.jms
 
 import javax.jms.Session
 import javax.jms.ConnectionFactory
