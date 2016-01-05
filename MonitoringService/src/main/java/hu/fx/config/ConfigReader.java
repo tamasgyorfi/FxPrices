@@ -8,7 +8,7 @@ public class ConfigReader {
 
 	public Properties getProperties() {
 		Properties properties = new Properties();
-		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("props_default.properties");
+		InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("WEB-INF/props_default.properties");
 		
 		try {
 			properties.load(inputStream);

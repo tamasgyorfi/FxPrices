@@ -12,22 +12,20 @@
 body {
 	font-size: 12px;
 }
-
 </style>
 	</h:head>
 	<h:body>
-	<h:outputStylesheet library="css" name="monitoring.css"  />
+		<h:outputStylesheet library="css" name="monitoring.css" />
 		<h:form>
-			<p:panel id="basic" header="Services"
-				footer="Services known to MonitoringService"
-				style="margin-bottom:20px">
+			<p:panel header="services" footer="Services known to MonitoringService" style="margin-bottom:20px" id="services">
 				<ui:repeat var="s" value="#{services.allServices}" varStatus="status">
-					<h:panelGrid columns="2" cellpadding="10" columnClasses="panelAlignment" >
-						<h:outputLabel value="#{s.name} - #{s.lastUpdate}" id ="details"/>
-						<p:poll interval="5" listener="#{s.getServiceDetails}" update="details" />
+					<h:panelGrid columns="2" cellpadding="10" columnClasses="panelAlignment">
+						<h:outputLabel value="#{s.serviceDetails}" id="details" />
+						<p:graphicImage value="#{s.status}" />
 					</h:panelGrid>
 				</ui:repeat>
 			</p:panel>
+			<p:poll interval="5" update="services" />
 		</h:form>
 	</h:body>
 </f:view>
