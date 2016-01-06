@@ -4,6 +4,7 @@ import org.apache.activemq.broker.BrokerService
 import hu.fx.service.ParamsSupplier
 import hu.monitoring.jms.HeartBeatSender
 import hu.monitoring.jms.ActiveMQHandler
+import hu.monitoring.MonitoringManager
 
 class ActiveMQBrokerStarter {
   def startBroker(): Unit = {
@@ -13,8 +14,8 @@ class ActiveMQBrokerStarter {
   }
   
   def startMonitoringClient(): Unit = {
-    val heartBeatSender = new HeartBeatSender("MessageBrokerWrapperService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
-    heartBeatSender.start()
+    val monitoringManager = MonitoringManager("MessageBrokerWrapperService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
+    monitoringManager.start()
   }
 }
 

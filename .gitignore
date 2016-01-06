@@ -8,3 +8,5 @@
 **/activemq-data/**
 **/*.log
 **/*.class
+**/*.cache-main
+**/*.cache-tests

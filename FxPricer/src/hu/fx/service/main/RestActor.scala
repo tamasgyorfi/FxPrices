@@ -18,6 +18,7 @@ import scala.util.Failure
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import java.io.StringWriter
+import hu.monitoring.MonitoringManager
 
 object Mapper {
   def objectMapper = {
@@ -51,8 +52,11 @@ class RestActor extends Actor with HttpService {
     val future = appDriver ? QuoteApiRequest(counterCurrency)
     onComplete(future) {
       case Success(QuoteApiReply(quotes)) => { complete(responseAsJson(quotes).asInstanceOf[JsArray]) }
-      case Failure(ex)                    => { complete(exceptionAsJson(ex)) }
-      case _                              => { complete(unknownErrorAsJson) }
+      case Failure(ex) => {
+        MonitoringManager.reportWarning(s"Exception while trying to respond. [QuoteApiRequest]. Exception was: {$ex}")
+        complete(exceptionAsJson(ex))
+      }
+      case _ => { complete(unknownErrorAsJson) }
     }
   }
 
@@ -60,8 +64,11 @@ class RestActor extends Actor with HttpService {
     val future = appDriver ? AllQuotesApiRequest
     onComplete(future) {
       case Success(AllQuotesApiReply(quotes)) => { complete(responseAsJson(quotes).asJsObject) }
-      case Failure(ex)                        => { complete(exceptionAsJson(ex)) }
-      case _                                  => { complete(unknownErrorAsJson) }
+      case Failure(ex) => {
+        MonitoringManager.reportWarning(s"Exception while trying to respond. [AllQuotesApiRequest]. Exception was: {$ex}")
+        complete(exceptionAsJson(ex))
+      }
+      case _ => { complete(unknownErrorAsJson) }
     }
   }
 

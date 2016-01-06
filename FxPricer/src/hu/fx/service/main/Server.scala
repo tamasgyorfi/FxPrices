@@ -13,6 +13,7 @@ import scala.concurrent.duration.DurationInt
 import hu.fx.service.config.ParamsSupplier
 import hu.monitoring.jms.HeartBeatSender
 import hu.monitoring.jms.ActiveMQHandler
+import hu.monitoring.MonitoringManager
 
 trait AkkaSystem {
   implicit val system = ActorSystem("StaticDataService")
@@ -38,18 +39,16 @@ class Server extends AkkaSystem {
       }
     }
   }
-
-  def startMonitoringClient(): Unit = {
-    val heartBeatSender = new HeartBeatSender("PricesService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
-    heartBeatSender.start()
-  }
-
 }
 
 object Server {
   def main(args: Array[String]): Unit = {
-    val server = new Server()
-    server.startMonitoringClient()
-    server.bindService()
+    startMonitoringClient()
+    new Server().bindService()
+  }
+
+  def startMonitoringClient(): Unit = {
+		  val monitoringManager = MonitoringManager("PricesService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
+				  monitoringManager.start()
   }
 }

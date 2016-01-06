@@ -3,6 +3,7 @@ package hu.fx
 import java.net.URL
 import org.slf4s.LoggerFactory
 import scala.io.Source
+import hu.monitoring.MonitoringManager
 
 package object service {
 

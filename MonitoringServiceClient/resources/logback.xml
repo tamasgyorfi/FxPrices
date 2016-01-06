@@ -1,0 +1,8 @@
+<configuration>
+	<appender name="JMS"
+		class="hu.monitoring.logging.DistributedLoggingAppender">
+	</appender>
+	<root level="WARN">
+		<appender-ref ref="JMS" />
+	</root>
+</configuration>

@@ -8,18 +8,23 @@ import hu.fx.service.main.QuotesRefresh
 import hu.fx.service.providers.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.providers.apilayer.json.QuoteJsonParser
 import hu.fx.data.Quote
+import hu.monitoring.MonitoringManager
 
-class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource{
+class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource {
 
-  def getMostFreshQuotes: Unit =>List[Quote] = {
+  def getMostFreshQuotes: Unit => List[Quote] = {
     val jsonFromApiLayer = retrievePricesAsString(apiEndpoint)
     (Unit => QuoteJsonParser(DatesSupplier).parseJsonForQuotes(jsonFromApiLayer))
   }
-  
+
   def receive = {
     case RequestQuote => {
-      val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("ApiLayerPriceService.getMostFreshQuotes()")
-      sender ! new QuotesRefresh(quotes, PROVIDER)
+      try {
+        val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("ApiLayerPriceService.getMostFreshQuotes()")
+        sender ! new QuotesRefresh(quotes, PROVIDER)
+      } catch {
+        case ex: Exception => MonitoringManager.reportError(s"Error while trying to refresh quotes from source ${PROVIDER}. Exception was: ${ex}")
+      }
     }
   }
 }

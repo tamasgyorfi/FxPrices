@@ -8,6 +8,7 @@ import hu.fx.service.main.QuotesRefresh
 import hu.fx.service.providers.yahoo.xml.QuoteXmlParser
 import hu.fx.service.providers.yahoo.config.YahooPriceSource
 import hu.fx.data.Quote
+import hu.monitoring.MonitoringManager
 
 class YahooPriceService extends YahooPriceSource with PriceSource {
 
@@ -17,8 +18,12 @@ class YahooPriceService extends YahooPriceSource with PriceSource {
 
   def receive = {
     case RequestQuote => {
-      val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("YahooPriceService.getMostFreshQuotes()")
-      sender ! new QuotesRefresh(quotes, PROVIDER)
+      try {
+        val quotes = measureFunctionRuntime(getMostFreshQuotes, ())("YahooPriceService.getMostFreshQuotes()")
+        sender ! new QuotesRefresh(quotes, PROVIDER)
+      } catch {
+        case ex: Exception => MonitoringManager.reportError(s"Error while trying to refresh quotes from source ${PROVIDER}. Exception was: ${ex}")
+      }
     }
   }
 }

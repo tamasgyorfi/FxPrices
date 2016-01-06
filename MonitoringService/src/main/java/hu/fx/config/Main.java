@@ -1,8 +1,9 @@
 package hu.fx.config;
 
+import hu.fx.domain.ReportMessages;
 import hu.fx.domain.Services;
 import hu.fx.messaging.JmsManager;
-import hu.fx.messaging.StatusUpdateListener;
+import hu.fx.messaging.UpdateMessageListener;
 import hu.staticdataservice.client.HttpClient;
 
 import java.util.Properties;
@@ -68,8 +69,13 @@ public class Main extends SpringBootServletInitializer {
 		return new Services();
 	}
 	
+	@Bean(name="messages")
+	public ReportMessages messages() {
+		return new ReportMessages();
+	}
+	
 	@Bean
-	public JmsManager jmsManager(HttpClient httpClient, Services services) {
-		return new JmsManager(httpClient, new StatusUpdateListener(services));
+	public JmsManager jmsManager(HttpClient httpClient, Services services, ReportMessages messages) {
+		return new JmsManager(httpClient, new UpdateMessageListener(services, messages));
 	}
 }	

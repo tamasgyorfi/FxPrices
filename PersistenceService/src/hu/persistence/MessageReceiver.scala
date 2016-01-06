@@ -4,6 +4,7 @@ import hu.monitoring.jms.ActiveMQHandler
 import hu.monitoring.jms.HeartBeatSender
 import hu.persistence.requestprocessor.AbstractMessageReceiver
 import hu.persistence.requestprocessor.LoggingMessageReceiver
+import hu.monitoring.MonitoringManager
 
 object ReceiverType extends Enumeration {
   type ReceiverType = Value
@@ -21,8 +22,8 @@ object MessageReceiverFactory {
   }
 
   def startMonitoringClient(): Unit = {
-    val heartBeatSender = new HeartBeatSender("PersistenceService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
-    heartBeatSender.start()
+    val monitoringManager = MonitoringManager("PersistenceService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
+    monitoringManager.start()
   }
 
   def main(args: Array[String]) = {
