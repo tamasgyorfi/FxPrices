@@ -1,4 +1,4 @@
-package hu.persistence
+package hu.persistence.driver
 
 import hu.staticdataservice.client.HttpClient
 import hu.fx.config.ConfigReader

@@ -1,10 +1,9 @@
-package hu.persistence.jms
+package hu.persistence.messaging.jms
 
-import javax.jms.Session
 import javax.jms.ConnectionFactory
 import javax.jms.Destination
-import javax.jms.MessageProducer
 import javax.jms.MessageConsumer
+import javax.jms.Session
 
 trait JmsHandler {
 

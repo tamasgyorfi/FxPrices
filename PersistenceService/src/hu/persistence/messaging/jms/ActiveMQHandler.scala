@@ -1,9 +1,8 @@
-package hu.fx.service.persistencerequest.jms
+package hu.persistence.messaging.jms
 
 import org.apache.activemq.ActiveMQConnectionFactory
 
-import hu.persistence.ParamsSupplier
-import hu.persistence.jms.JmsHandler
+import hu.persistence.driver.ParamsSupplier
 import javax.jms.ConnectionFactory
 import javax.jms.Destination
 import javax.jms.MessageConsumer

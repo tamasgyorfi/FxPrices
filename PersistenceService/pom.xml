@@ -92,6 +92,14 @@
 		</plugins>
 	</build>
 	<dependencies>
+
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>casbah_2.11</artifactId>
+			<version>3.1.0</version>
+			<type>pom</type>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.jms</groupId>
 			<artifactId>javax.jms-api</artifactId>
@@ -135,4 +143,15 @@
 		</dependency>
 
 	</dependencies>
+	<repositories>
+		<repository>
+			<id>oss-sonatype</id>
+			<name>oss-sonatype</name>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 </project>
