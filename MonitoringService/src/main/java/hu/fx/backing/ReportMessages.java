@@ -1,4 +1,4 @@
-package hu.fx.domain;
+package hu.fx.backing;
 
 import java.util.ArrayList;
 import java.util.Collections;

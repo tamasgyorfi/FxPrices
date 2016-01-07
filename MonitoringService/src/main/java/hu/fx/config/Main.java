@@ -1,7 +1,8 @@
 package hu.fx.config;
 
-import hu.fx.domain.ReportMessages;
-import hu.fx.domain.Services;
+import hu.fx.backing.ReportMessages;
+import hu.fx.backing.Services;
+import hu.fx.datetime.DateTimeProvider;
 import hu.fx.messaging.JmsManager;
 import hu.fx.messaging.UpdateMessageListener;
 import hu.staticdataservice.client.HttpClient;
@@ -75,7 +76,12 @@ public class Main extends SpringBootServletInitializer {
 	}
 	
 	@Bean
-	public JmsManager jmsManager(HttpClient httpClient, Services services, ReportMessages messages) {
-		return new JmsManager(httpClient, new UpdateMessageListener(services, messages));
+	public DateTimeProvider dateTimeProvider() {
+		return new DateTimeProvider();
+	}
+	
+	@Bean
+	public JmsManager jmsManager(HttpClient httpClient, Services services, ReportMessages messages, DateTimeProvider dateTimeProvider) {
+		return new JmsManager(httpClient, new UpdateMessageListener(services, messages, dateTimeProvider));
 	}
 }	

@@ -1,4 +1,6 @@
-package hu.fx.domain;
+package hu.fx.backing;
+
+import hu.fx.datetime.DateTimeProvider;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -15,14 +17,16 @@ public class Service implements Comparable<Service> {
 	
 	private String name;
 	private Instant lastUpdate;
+	private DateTimeProvider dateTimeProvider;
 	
 	public Service(String name) {
 		this.name = name;
 	}
 
-	public Service(String name, Instant lastUpdate) {
+	public Service(String name, DateTimeProvider dateTimeProvider) {
 		this(name);
-		this.lastUpdate = lastUpdate;
+		this.dateTimeProvider = dateTimeProvider;
+		this.lastUpdate = dateTimeProvider.now();
 	}
 
 	public String getServiceDetails() {
@@ -32,18 +36,13 @@ public class Service implements Comparable<Service> {
 		return name + " - " + lastUpdate.toString();
 	}
 
-	public Service setLastUpdate(Instant lastUpdate) {
-		return new Service(name, lastUpdate);
-	}
-
 	public String getStatus() {
 
 		if (lastUpdate == null) {
 			return IMG_UNKNOWN;
 		}
 		
-		Instant now = Instant.now();
-		long between = ChronoUnit.SECONDS.between(lastUpdate, now);
+		long between = dateTimeProvider.betweenDateAndNow(lastUpdate, ChronoUnit.SECONDS);
 		if (between > SECONDS_TO_WARNING && between < SECONDS_TO_ERROR) {
 			return IMG_YELLOW;
 		} else if (between > SECONDS_TO_ERROR) {

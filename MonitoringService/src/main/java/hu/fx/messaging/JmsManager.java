@@ -21,6 +21,7 @@ public class JmsManager {
 
 	private static final String MONITORING_DESTINATION = "jms.monitoring.destination";
 	private static final String JMS_BROKER_ENDPOINT = "jms.broker.endpoint";
+
 	private HttpClient client;
 	private Map<String, String> parameters;
 	private MessageListener listener;

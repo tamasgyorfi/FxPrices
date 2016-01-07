@@ -1,7 +1,6 @@
-package hu.fx.domain;
+package hu.fx.backing;
 
 import java.time.Instant;
-import java.util.Date;
 
 public class ReportMessage {
 
@@ -11,12 +10,12 @@ public class ReportMessage {
 	private final Instant receivedOn;
 	private final String severity;
 
-	public ReportMessage(String sender, String message, String timestamp, String severity) {
+	public ReportMessage(String sender, String message, Instant timestamp, String severity, Instant receivedOn) {
 		this.sender = sender;
 		this.message = message;
 		this.severity = severity;
-		this.timestamp = new Date(Long.parseLong(timestamp)).toInstant();
-		this.receivedOn = Instant.now();
+		this.timestamp = timestamp;
+		this.receivedOn = receivedOn;
 	}
 	
 	public String getSender() {
@@ -27,8 +26,8 @@ public class ReportMessage {
 		return message;
 	}
 	
-	public String getTimestamp() {
-		return timestamp.toString();
+	public Instant getTimestamp() {
+		return timestamp;
 	}
 	
 	public Instant getReceivedOn() {
