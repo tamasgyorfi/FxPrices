@@ -1,32 +1,33 @@
 package hu.fx.service.main
 
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.DurationInt
+import org.slf4s.LoggerFactory
+import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern.ask
-import spray.can.Http
-import scala.concurrent.Await
-import akka.actor.ActorSystem
-import akka.actor.Props
-import org.slf4s.LoggerFactory
-import scala.concurrent.ExecutionContext.Implicits.global
 import akka.util.Timeout
-import scala.concurrent.duration.DurationInt
+import hu.fx.service.config.ObjectConfig
 import hu.fx.service.config.ParamsSupplier
-import hu.monitoring.jms.HeartBeatSender
-import hu.monitoring.jms.ActiveMQHandler
+import hu.fx.service.messaging.RequestSender
 import hu.monitoring.MonitoringManager
+import hu.monitoring.jms.ActiveMQHandler
+import spray.can.Http
+import akka.actor.Props
+import hu.fx.service.pricing.RestApiEndpoint
 
 trait AkkaSystem {
   implicit val system = ActorSystem("StaticDataService")
-  implicit val timeout = Timeout(5 seconds)
-
-  val restServer = system.actorOf(Props[RestActor], name = "RestActor")
 }
+class PriceServiceServer(persistenceRequestSender: RequestSender) extends AkkaSystem {
 
-class Server extends AkkaSystem {
-
+  implicit val timeout = Timeout(5 seconds)
   val logger = LoggerFactory.getLogger(this.getClass)
+ 
+  private val restServer = system.actorOf(Props(new RestApiEndpoint(persistenceRequestSender)), name = "RequestReceiver")
 
-  def bindService() = {
+  private def start() = {
     val future = IO(Http) ? Http.Bind(restServer,
       ParamsSupplier.getParam("fxpricer.rest.host"),
       ParamsSupplier.getParam("fxpricer.rest.port").toInt)
@@ -41,10 +42,10 @@ class Server extends AkkaSystem {
   }
 }
 
-object Server {
+object PriceServiceServer {
   def main(args: Array[String]): Unit = {
     startMonitoringClient()
-    new Server().bindService()
+    new PriceServiceServer(ObjectConfig.persistenceRequestSender).start()
   }
 
   def startMonitoringClient(): Unit = {

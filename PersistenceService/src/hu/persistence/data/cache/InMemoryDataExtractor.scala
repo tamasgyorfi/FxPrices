@@ -4,7 +4,7 @@ import hu.fx.data.Quote
 import hu.persistence.api.PortfolioElement
 import hu.persistence.api.QuoteComparison
 import java.time.ZonedDateTime
-import hu.persistence.data.DataExtractor
+import hu.persistence.api.DataExtractor
 
 class InMemoryDataExtractor extends DataExtractor {
 

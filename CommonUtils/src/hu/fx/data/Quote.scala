@@ -10,7 +10,6 @@ trait Quote {
 
   override def toString(): String = {
     "Quote: " + this.getClass.getSimpleName + ", " + ccy1 + ", " + ccy2 + ", " + price + ", " + quoteUnit + ", " + timestamp + ", " + source
-
   }
 
   override def equals(that: Any): Boolean = that match {
@@ -41,11 +40,23 @@ case class PmQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, 
   }
 }
 
+/**
+ * This case class is only used for comparison of two quotes from the point of view of currencies.
+ * Note: It does not take into account prices.
+ */
 case class SimpleQuote(val ccy2: String, val source: String)(implicit val ccy1: String = "USD") extends Quote {
   def quoteUnit = 1
   def price = 1
   def timestamp = ""
   def withNewPricePrice(price: Double): Quote = this
+
+  override def equals(that: Any): Boolean = that match {
+    case q: Quote => {
+      val quote = that.asInstanceOf[Quote]
+      quote.ccy1.equals(ccy1) && quote.ccy2.equals(ccy2) && quote.source.equals(source)
+    }
+    case _ => false
+  }
 }
 
 case object EmptyQuote extends Quote {
@@ -56,5 +67,4 @@ case object EmptyQuote extends Quote {
   def timestamp = throw new IllegalArgumentException
   def source = throw new IllegalArgumentException
   def withNewPricePrice(price: Double): Quote = throw new IllegalArgumentException
-
 }

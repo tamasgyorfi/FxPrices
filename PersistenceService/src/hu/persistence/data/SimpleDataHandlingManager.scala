@@ -7,6 +7,7 @@ import hu.persistence.data.logger.LoggingDataExtractor
 import hu.persistence.data.logger.LoggingDataPersister
 import hu.persistence.data.mongo.DatabaseDataExtractor
 import hu.persistence.data.mongo.DatabaseDataPersister
+import hu.persistence.api.DataExtractor
 
 class SimpleDataHandlingManager(persistenceType: DataHandlerType.Value) extends DataHandlingManager {
   
