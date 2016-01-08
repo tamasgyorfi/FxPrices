@@ -23,7 +23,7 @@ object PersistenceServiceStarter {
   def main(args: Array[String]) = {
     startMonitoringClient()
     val receiver = {
-      PersistenceServiceStarter(DataHandlerType.LOGGING).startListening
+      PersistenceServiceStarter(DataHandlerType.DATABASE).startListening
       startMonitoringClient()
       do {
       } while (true)

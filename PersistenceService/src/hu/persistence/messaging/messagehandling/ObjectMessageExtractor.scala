@@ -7,6 +7,7 @@ import javax.jms.ObjectMessage
 class ObjectMessageExtractor extends MessageExtractor{
   def extract(message:Message): List[Quote] = {
     val objMessage = message.asInstanceOf[ObjectMessage]
-    null
+    
+    objMessage.getObject.asInstanceOf[List[Quote]]
   }
 }

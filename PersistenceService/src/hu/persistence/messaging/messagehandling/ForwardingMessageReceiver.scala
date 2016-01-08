@@ -22,6 +22,7 @@ class ForwardingMessageReceiver(messageExtractor: MessageExtractor, dataPersiste
         	val errorMessage = s"Error while trying to process/save new quotes from price server. Exception was ${ex}"
           logger error errorMessage 
           MonitoringManager.reportError(errorMessage)
+          ex.printStackTrace()
         }
       }
     }

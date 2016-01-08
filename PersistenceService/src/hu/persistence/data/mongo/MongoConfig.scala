@@ -8,6 +8,6 @@ object MongoConfig {
     private val DATABASE = "fxprices"
     private val COLLECTION = "quotes"
     
-    val connection = MongoClient(SERVER)
+    val connection = MongoClient(SERVER, PORT)
     val collection = connection(DATABASE)(COLLECTION)
 }
