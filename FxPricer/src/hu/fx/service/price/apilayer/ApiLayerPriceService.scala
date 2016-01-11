@@ -9,8 +9,8 @@ import hu.fx.service.price.apilayer.config.ApiLayerPriceSource
 import hu.fx.service.price.apilayer.json.QuoteJsonParser
 import hu.fx.service.retrievePricesAsString
 import hu.monitoring.MonitoringManager
-import hu.fx.service.config.QuotesRefresh
-import hu.fx.service.config.RequestQuote
+import hu.fx.service.pricing.QuotesRefresh
+import hu.fx.service.pricing.RequestQuote
 
 class ApiLayerPriceService(apiEndpoint: String) extends PriceSource with ApiLayerPriceSource {
 

@@ -9,11 +9,6 @@ import akka.actor.actorRef2Scala
 import akka.testkit.ImplicitSender
 import akka.testkit.TestKit
 import hu.fx.data.FxQuote
-import hu.fx.service.config.ApplicationStart
-import hu.fx.service.config.AllQuotesApiReply
-import hu.fx.service.config.QuoteApiReply
-import hu.fx.service.config.AllQuotesApiRequest
-import hu.fx.service.config.QuoteApiRequest
 
 trait TestData {
   val quotes1 = List(FxQuote("EUR", 1, 1, "", "YAHOO"), FxQuote("HUF", 1, 1, "", "YAHOO"), FxQuote("ROL", 1, 1, "", "YAHOO"))

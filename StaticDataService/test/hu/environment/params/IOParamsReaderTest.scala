@@ -1,9 +1,12 @@
-package hu.staticdata.params
+package hu.environment.params
 
 import org.scalatest.FlatSpec
 import org.scalatest.mock.MockitoSugar
+
 import java.io.File
+
 import scala.io.Source
+
 import org.scalatest.FunSuite
 import org.scalatest.BeforeAndAfter
 import org.mockito.Mockito._

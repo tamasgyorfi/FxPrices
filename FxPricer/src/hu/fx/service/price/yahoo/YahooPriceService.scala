@@ -7,8 +7,8 @@ import hu.monitoring.MonitoringManager
 import hu.fx.service.price.yahoo.xml.QuoteXmlParser
 import hu.fx.service.price.yahoo.config.YahooPriceSource
 import hu.fx.service.price.PriceSource
-import hu.fx.service.config.QuotesRefresh
-import hu.fx.service.config.RequestQuote
+import hu.fx.service.pricing.QuotesRefresh
+import hu.fx.service.pricing.RequestQuote
 
 class YahooPriceService extends YahooPriceSource with PriceSource {
 

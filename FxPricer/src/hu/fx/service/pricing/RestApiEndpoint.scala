@@ -19,10 +19,6 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.HttpService
 import hu.fx.service.messaging.RequestSender
 import hu.monitoring.MonitoringManager
-import hu.fx.service.config.ReplyMessage
-import hu.fx.service.config.QuoteApiRequest
-import hu.fx.service.config.ApplicationStart
-import hu.fx.service.config.AllQuotesApiRequest
 
 class RestApiEndpoint(requestSender:RequestSender) extends Actor with HttpService {
   private val appDriver = context.actorOf(Props(new PriceEngine(requestSender)), name = "PriceEngine")

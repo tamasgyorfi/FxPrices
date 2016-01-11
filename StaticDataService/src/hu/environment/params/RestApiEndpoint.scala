@@ -1,12 +1,11 @@
-package hu.staticdata
+package hu.environment.params
 
+import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
+
 import akka.actor.Actor
-import akka.actor.Props
-import akka.pattern.ask
+import akka.actor.ActorRef
 import akka.util.Timeout
-import hu.staticdata.params.ParamValues
-import hu.staticdata.params.ParamsReader
 import spray.http.MediaTypes._
 import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling.ToResponseMarshallable.isMarshallable
@@ -15,16 +14,10 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.Directive.pimpApply
 import spray.routing.HttpService
 import spray.routing.directives.ParamDefMagnet.apply
-import scala.concurrent.Await
-import hu.staticdata.params.ParamsRequest
-import hu.staticdata.params.EnvironmentNotFound
-import hu.staticdata.params.ParamsReader
-import hu.staticdata.params.ParamsActor
-import hu.staticdata.params.Message
+import akka.pattern.ask
 
-class RestActor(paramsReader: ParamsReader) extends Actor with HttpService {
 
-  val paramsActor = context.actorOf(Props(new ParamsActor(paramsReader.getAllParameters())), "StaticDataService-properties")
+class RestApiEndpoint(paramsActor: ActorRef) extends Actor with HttpService {
 
   def actorRefFactory = context
   def receive = runRoute(route)
@@ -54,8 +47,4 @@ private object MessageConverter extends JsonFormat[Message] {
   def read(value: JsValue) = value match {
     case _ => new Message {}
   }
-}
-
-object RestActor {
-  def apply(paramsReader: ParamsReader) = new RestActor(paramsReader)
 }

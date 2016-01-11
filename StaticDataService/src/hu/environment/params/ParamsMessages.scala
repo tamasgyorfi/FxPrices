@@ -1,4 +1,4 @@
-package hu.staticdata.params
+package hu.environment.params
 
 class Message
 

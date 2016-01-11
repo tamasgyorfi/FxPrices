@@ -1,11 +1,11 @@
-package hu.staticdata.params
+package hu.environment.params
 
 import org.slf4s.LoggerFactory
 
 import akka.actor.Actor
 import akka.actor.actorRef2Scala
 
-class ParamsActor(params: Map[String, Map[String, String]]) extends Actor {
+class ParamRequestServer(params: Map[String, Map[String, String]]) extends Actor {
 
   val logger = LoggerFactory.getLogger(this.getClass)
 

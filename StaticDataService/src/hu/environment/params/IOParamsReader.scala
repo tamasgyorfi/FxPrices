@@ -1,4 +1,4 @@
-package hu.staticdata.params
+package hu.environment.params
 
 import scala.io.Source
 import java.io.File

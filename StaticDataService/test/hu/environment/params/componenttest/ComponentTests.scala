@@ -1,20 +1,18 @@
-package hu.staticdata.params.componenttest
+package hu.environment.params.componenttest
 
 import scala.concurrent.duration.DurationInt
-
 import org.scalatest.Matchers
 import org.scalatest.WordSpecLike
-
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.actorRef2Scala
 import akka.testkit.ImplicitSender
 import akka.testkit.TestKit
-import hu.staticdata.params.EnvironmentNotFound
-import hu.staticdata.params.ParamValues
-import hu.staticdata.params.ParamsActor
-import hu.staticdata.params.ParamsReader
-import hu.staticdata.params.ParamsRequest
+import hu.environment.params.ParamValues
+import hu.environment.params.EnvironmentNotFound
+import hu.environment.params.ParamRequestServer
+import hu.environment.params.ParamsReader
+import hu.environment.params.ParamsRequest
 
 class ComponentTests extends TestKit(ActorSystem("testSystem")) with WordSpecLike with Matchers with ImplicitSender {
 
@@ -24,7 +22,7 @@ class ComponentTests extends TestKit(ActorSystem("testSystem")) with WordSpecLik
       "uat" -> Map("key19" -> "value19", "key29" -> "value29", "key39" -> "value39"))
   }
 
-  val restActorRef = system.actorOf(Props(new ParamsActor(new DummyValuesParamsReader {}.getAllParameters())), "staticDataService-properties")
+  val restActorRef = system.actorOf(Props(new ParamRequestServer(new DummyValuesParamsReader {}.getAllParameters())), "staticDataService-properties")
 
   "The properties actor" should {
     "return all requested parameters" in {

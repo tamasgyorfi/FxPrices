@@ -12,7 +12,6 @@
 		<module>StaticDataServiceClient</module>
 		<module>MonitoringService</module>
 		<module>MonitoringServiceClient</module>
-		<module>MessageBrokerWrapper</module>
 		<module>SummarizerService</module>
 		<module>PersistenceService</module>
 		<module>FxPricer</module>

@@ -1,16 +1,14 @@
-package hu.staticdata.params.componenttest
+package hu.environment.params.componenttest
 
 import java.net.URL
-
 import scala.io.Source
-
 import org.scalatest.Matchers
 import org.scalatest.WordSpecLike
+import hu.environment.main.Server
+import hu.environment.config.EnvironmentServiceConfig
 
-import hu.staticdata.Server
-import hu.staticdata.StaticDataServiceComponent
 
-trait TestData extends StaticDataServiceComponent {
+trait TestData extends EnvironmentServiceConfig {
   val serviceUrl = "http://" + interface + ":" + port + "/params?"
 
   def getParameters(params: String): String = {

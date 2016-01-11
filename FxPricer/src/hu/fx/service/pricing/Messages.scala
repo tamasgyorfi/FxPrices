@@ -1,4 +1,4 @@
-package hu.fx.service.config
+package hu.fx.service.pricing
 
 import hu.fx.data.Quote
 
