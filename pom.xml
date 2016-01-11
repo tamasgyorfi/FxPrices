@@ -9,7 +9,7 @@
 	<modules>
 		<module>CommonUtils</module>
 		<module>EnvironmentService</module>
-		<module>StaticDataServiceClient</module>
+		<module>EnvironmentServiceClient</module>
 		<module>MonitoringService</module>
 		<module>MonitoringServiceClient</module>
 		<module>SummarizerService</module>
