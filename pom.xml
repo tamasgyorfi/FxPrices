@@ -8,7 +8,7 @@
 
 	<modules>
 		<module>CommonUtils</module>
-		<module>StaticDataService</module>
+		<module>EnvironmentService</module>
 		<module>StaticDataServiceClient</module>
 		<module>MonitoringService</module>
 		<module>MonitoringServiceClient</module>

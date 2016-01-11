@@ -1,5 +1,5 @@
-cd StaticDataService
-echo "##### Starting StaticData service"
+cd EnvironmentService
+echo "##### Starting EnvironmentData service"
 scala -classpath target/staticdata-service.jar hu.environment.main.Server &
 sleep 15
 cd ../PersistenceService
