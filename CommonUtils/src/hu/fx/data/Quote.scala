@@ -67,4 +67,6 @@ case object EmptyQuote extends Quote {
   def timestamp = throw new IllegalArgumentException
   def source = throw new IllegalArgumentException
   def withNewPricePrice(price: Double): Quote = throw new IllegalArgumentException
+  
+  override def toString() = "Empty quote."
 }

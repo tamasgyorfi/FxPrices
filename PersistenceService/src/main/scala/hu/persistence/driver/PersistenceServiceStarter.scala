@@ -7,12 +7,17 @@ import hu.persistence.messaging.messagehandling.AbstractMessageReceiver
 import hu.persistence.messaging.messagehandling.ForwardingMessageReceiver
 import hu.persistence.messaging.messagehandling.ObjectMessageExtractor
 import hu.persistence.data.SimpleDataHandlingManager
+import hu.persistence.data.mongo.DatabaseDataExtractor
+import java.time.LocalDate
+import hu.persistence.data.mongo.DatabaseDataExtractor
+import hu.persistence.config.MongoConfig
+import hu.persistence.config.Config
 
 object PersistenceServiceStarter {
 
   def apply(receiverType: DataHandlerType.Value): AbstractMessageReceiver = {
-    val dataHandlingManager = new SimpleDataHandlingManager(receiverType)
-      new ForwardingMessageReceiver(new ObjectMessageExtractor(), dataHandlingManager.getDataPersister())
+    val dataHandlingManager = new SimpleDataHandlingManager(receiverType, MongoConfig.collection)
+      new ForwardingMessageReceiver(Config.messageExtractor, dataHandlingManager.getDataPersister())
   }
 
   def startMonitoringClient(): Unit = {
@@ -28,5 +33,12 @@ object PersistenceServiceStarter {
       do {
       } while (true)
     }
+  }
+}
+
+object PersistenceServiceLocal {
+  def main(args: Array[String]) = {
+    // Can be used for testing, will not connect to other services
+    // new DatabaseDataExtractor(MongoConfig.collection).
   }
 }

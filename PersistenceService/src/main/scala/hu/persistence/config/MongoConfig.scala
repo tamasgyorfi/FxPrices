@@ -1,8 +1,14 @@
-package hu.persistence.data.mongo
+package hu.persistence.config
 
 import com.mongodb.casbah.MongoClient
+import com.mongodb.casbah.MongoCollection
 
-object MongoConfig {
+trait DbConfig {
+    def connection: MongoClient
+    def collection: MongoCollection  
+}
+
+object MongoConfig extends DbConfig {
     private val SERVER = "localhost"
     private val PORT   = 27017
     private val DATABASE = "fxprices"

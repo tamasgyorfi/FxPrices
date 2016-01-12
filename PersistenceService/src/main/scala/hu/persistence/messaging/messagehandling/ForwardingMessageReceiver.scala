@@ -13,20 +13,23 @@ class ForwardingMessageReceiver(messageExtractor: MessageExtractor, dataPersiste
   def onMessage(message: Message): Unit = message match {
     case msg: ObjectMessage => {
       logger info s"Object message received $message"
-      
+
       try {
         val quotes = messageExtractor.extract(msg)
         dataPersister.save(quotes)
       } catch {
         case ex: Exception => {
-        	val errorMessage = s"Error while trying to process/save new quotes from price server. Exception was ${ex}"
-          logger error errorMessage 
-          MonitoringManager.reportError(errorMessage)
-          ex.printStackTrace()
+          handleException(ex)
         }
       }
     }
     case _ => logger info s"Object messages are supported only. Received $message"
+  }
+
+  protected def handleException(ex: Exception) = {
+    val errorMessage = s"Error while trying to process/save new quotes from price server. Exception was ${ex}"
+    logger error errorMessage
+    MonitoringManager.reportError(errorMessage)
   }
 
   def startListening = {
