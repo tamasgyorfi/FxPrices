@@ -1,7 +1,13 @@
 package hu.persistence.config
 
-import hu.persistence.messaging.messagehandling.ObjectMessageExtractor
+import hu.persistence.data.DataHandlingManager
+import hu.persistence.messaging.messagehandling.AbstractMessageReceiver
+import hu.persistence.messaging.messagehandling.MessageExtractor
+import hu.monitoring.MonitoringManager
 
-object Config {
-  val messageExtractor = new ObjectMessageExtractor()
+trait Config {
+  def messageExtractor: MessageExtractor
+  def dataHandlingManager: DataHandlingManager
+  def messageReceiver: AbstractMessageReceiver
+  def monitoringManager: MonitoringManager
 }

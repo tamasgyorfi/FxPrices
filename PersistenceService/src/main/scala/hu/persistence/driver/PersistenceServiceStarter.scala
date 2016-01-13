@@ -1,37 +1,55 @@
 package hu.persistence.driver
 
-import hu.monitoring.MonitoringManager
-import hu.monitoring.jms.ActiveMQHandler
-import hu.persistence.api.DataHandlerType
-import hu.persistence.messaging.messagehandling.AbstractMessageReceiver
-import hu.persistence.messaging.messagehandling.ForwardingMessageReceiver
-import hu.persistence.messaging.messagehandling.ObjectMessageExtractor
-import hu.persistence.data.SimpleDataHandlingManager
-import hu.persistence.data.mongo.DatabaseDataExtractor
-import java.time.LocalDate
-import hu.persistence.data.mongo.DatabaseDataExtractor
-import hu.persistence.config.MongoConfig
+import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.DurationInt
+import org.slf4s.LoggerFactory
+import akka.actor.ActorSystem
+import akka.actor.Props
+import akka.io.IO
+import akka.pattern.ask
+import akka.util.Timeout
 import hu.persistence.config.Config
+import hu.persistence.config.DatabaseConfig
+import spray.can.Http
+import hu.persistence.restapi.RestApiEndpoint
 
-object PersistenceServiceStarter {
+trait PersistenceServiceStarter extends Config {
 
-  def apply(receiverType: DataHandlerType.Value): AbstractMessageReceiver = {
-    val dataHandlingManager = new SimpleDataHandlingManager(receiverType, MongoConfig.collection)
-      new ForwardingMessageReceiver(Config.messageExtractor, dataHandlingManager.getDataPersister())
+  implicit val system = ActorSystem("PersistenceService")
+  implicit val timeout = Timeout(5 seconds)
+  val logger = LoggerFactory.getLogger(this.getClass)
+
+  def startService() = {
+    messageReceiver.startListening
+    startMonitoringClient()
+    bindRestService()
   }
 
-  def startMonitoringClient(): Unit = {
-    val monitoringManager = MonitoringManager("PersistenceService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
+  private def startMonitoringClient(): Unit = {
     monitoringManager.start()
   }
 
+  private def bindRestService() = {
+    val restServer = system.actorOf(Props(new RestApiEndpoint(dataHandlingManager.getDataExtractor())), name = "RequestReceiver")
+    val future = IO(Http) ? Http.Bind(restServer, "localhost", 9999)
+
+    Await.ready(future, timeout.duration) map {
+      case Http.Bound(host) => logger info s"Service successfully bound"
+      case message => {
+        logger error s"Error binding service. Message received: $message. Exiting."
+        System.exit(1)
+      }
+    }
+  }
+}
+
+object PersistenceServerStarter {
   def main(args: Array[String]) = {
-    startMonitoringClient()
     val receiver = {
-      PersistenceServiceStarter(DataHandlerType.DATABASE).startListening
-      startMonitoringClient()
-      do {
-      } while (true)
+      class Starter() extends PersistenceServiceStarter with DatabaseConfig
+      val starter = new Starter()
+      starter.startService()
     }
   }
 }

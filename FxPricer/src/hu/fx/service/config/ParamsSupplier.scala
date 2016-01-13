@@ -9,6 +9,7 @@ object ParamsSupplier {
   val BROKER_ENDPOINT = "jms.broker.endpoint"
   val MONITORING_DESTINATION = "jms.monitoring.destination"
 
+  val configReader = new ConfigReader("resources/props_%s.properties")
   private val parameters: List[String] =
     List("service.yahoo.prices",
       "service.apilayer.prices",
@@ -19,8 +20,8 @@ object ParamsSupplier {
       "fxpricer.rest.port")
 
   private val params = {
-    val host = ConfigReader.getProperty("staticdata.server.host").getOrElse("localhost")
-    val port = ConfigReader.getProperty("staticdata.server.port").getOrElse("8888")
+    val host = configReader.getProperty("staticdata.server.host").getOrElse("localhost")
+    val port = configReader.getProperty("staticdata.server.port").getOrElse("8888")
 
     HttpClient(host -> port.toInt).getParameters(EnvironmentSupplier.getEnvironment(), parameters)
   }

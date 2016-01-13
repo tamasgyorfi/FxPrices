@@ -6,6 +6,8 @@ import hu.fx.data.PmQuote
 import hu.fx.data.EmptyQuote
 import org.scalatest.BeforeAndAfter
 import hu.fx.data.Quote
+import hu.persistence.FongoFixture
+import hu.persistence.TestData
 
 class DatabaseDataPersisterTest extends FunSuite with BeforeAndAfter with FongoFixture with TestData{
 

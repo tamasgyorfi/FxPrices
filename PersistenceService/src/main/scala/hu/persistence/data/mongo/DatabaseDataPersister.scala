@@ -7,7 +7,6 @@ import com.mongodb.casbah.commons.MongoDBObjectBuilder
 import com.mongodb.DBObject
 import org.slf4s.LoggerFactory
 import hu.monitoring.MonitoringManager
-import hu.persistence.config.MongoConfig
 import com.mongodb.casbah.MongoCollection
 
 class DatabaseDataPersister(collection: MongoCollection) extends DataPersister {

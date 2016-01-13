@@ -6,6 +6,8 @@ import hu.fx.config.EnvironmentSupplier
 
 object ParamsSupplier {
 
+  val configReader = new ConfigReader("src/main/resources/props_%s.properties")
+
   val BROKER_ENDPOINT = "jms.broker.endpoint"
   val MONITORING_DESTINATION = "jms.monitoring.destination"
 
@@ -17,8 +19,8 @@ object ParamsSupplier {
       "fxpricer.rest.port")
 
   private val params = {
-    val host = ConfigReader.getProperty("staticdata.server.host").getOrElse("localhost")
-    val port = ConfigReader.getProperty("staticdata.server.port").getOrElse("8888")
+    val host = configReader.getProperty("staticdata.server.host").getOrElse("localhost")
+    val port = configReader.getProperty("staticdata.server.port").getOrElse("8888")
 
     HttpClient((host -> port.toInt)).getParameters(EnvironmentSupplier.getEnvironment(), parameters)
   }

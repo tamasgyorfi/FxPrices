@@ -6,7 +6,7 @@ import org.scalatest.mock.MockitoSugar
 import hu.persistence.data.DataPersister
 import javax.jms.ObjectMessage
 import org.mockito.Mockito._
-import hu.persistence.data.mongo.TestData
+import hu.persistence.TestData
 
 class ForwardingMessageReceiverTest extends FunSuite with BeforeAndAfter with MockitoSugar with TestData {
 

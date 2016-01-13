@@ -12,11 +12,12 @@ import hu.environment.params.RestApiEndpoint
 
 trait EnvironmentServiceConfig {
 
+  val configReader = new ConfigReader("resources/props_%s.properties")
   val paramsReader = IOParamsReader()
   val actorSystem = ActorSystem("StaticDataService")
 
-  val interface = ConfigReader.getProperty("interface").getOrElse("localhost")
-  val port = ConfigReader.getProperty("port").getOrElse("8000") toInt
+  val interface = configReader.getProperty("interface").getOrElse("localhost")
+  val port = configReader.getProperty("port").getOrElse("8000") toInt
 
   implicit val timeout = Timeout(50000 seconds)
   implicit val system = actorSystem

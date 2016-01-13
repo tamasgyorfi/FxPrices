@@ -4,9 +4,8 @@ import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
 
-object ConfigReader {
+class ConfigReader(path: String) {
 
-  private val CONFIG_PATH = "resources/props_%s.properties"
   private val properties = ConfigReader.readProperties()
   
   def getProperty(key: String): Option[String] = {
@@ -18,7 +17,7 @@ object ConfigReader {
   private object ConfigReader {
     def readProperties() = {
       val props = new Properties
-      val loaded = props.load(new FileInputStream(new File(CONFIG_PATH.format(EnvironmentSupplier.getEnvironment()))))
+      val loaded = props.load(new FileInputStream(new File(path.format(EnvironmentSupplier.getEnvironment()))))
       props
     }
   }
