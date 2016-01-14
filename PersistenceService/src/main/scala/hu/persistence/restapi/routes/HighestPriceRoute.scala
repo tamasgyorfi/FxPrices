@@ -13,20 +13,17 @@ import akka.pattern.ask
 import hu.persistence.restapi.MaxPriceRequest
 import hu.persistence.restapi.MaxPriceReply
 
-
-trait HighestPriceRoute extends HttpService {
-  private implicit def ec = actorRefFactory.dispatcher
-  private implicit val timeout = Timeout(5 seconds)
-
-  def newWorker: ActorRef
+trait HighestPriceRoute extends Route {
 
   def maxPriceRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("maxPrice") {
-          parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
-            complete {
-              (newWorker ? MaxPriceRequest(ccy1, ccy2, date)).mapTo[MaxPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+        path("maxPrice" / Segment) { (source) =>
+          {
+            parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
+              complete {
+                (newWorker ? MaxPriceRequest(ccy1, ccy2, source, date)).mapTo[MaxPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+              }
             }
           }
         }

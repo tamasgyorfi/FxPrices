@@ -15,7 +15,7 @@ trait TestData {
     EmptyQuote,
     FxQuote("EUR", 1, 11.99, "", "source")("HUF"))
 
-  val allUsdKrw = List(
+  val allUsdKrwYahoo = List(
     FxQuote("KRW", 0, 1204.14502, "2016-01-11T15:11:09+0000", "YAHOO"),
     FxQuote("KRW", 0, 6.91, "2016-01-11T15:07:03+0000", "YAHOO"),
     FxQuote("KRW", 0, 22450.0, "2016-01-11T15:07:04+0000", "YAHOO"),
@@ -25,4 +25,6 @@ trait TestData {
     FxQuote("KRW", 0, 6.35, "2016-01-11T15:09:00+0000", "YAHOO"),
     FxQuote("KRW", 0, 2.425, "2016-01-11T15:07:00+0000", "YAHOO"))
 
+  val allUsdKrwApiLayer = List(
+    FxQuote("KRW", 1, 1204.234985, "2016-01-11T17:12:13+0000", "APILAYER")("USD"))
 }

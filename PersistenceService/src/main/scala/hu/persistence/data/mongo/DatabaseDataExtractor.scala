@@ -17,18 +17,18 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
 
   //TODO: some database-backed implementation here
   private val DESCENDING = -1
-  private val ASCENDING  = 1
+  private val ASCENDING = 1
 
-  def calculateCurrentPortfolioValue(portfolio: List[PortfolioElement], resultCurrency: String): Double = ???
-  def calculateHistoricalPortfolioValue(portfolio: List[PortfolioElement], resultCurrency: String, date: LocalDate): Double = ???
+  def calculateCurrentPortfolioValue(portfolio: List[PortfolioElement], source: String, resultCurrency: String): Double = ???
+  def calculateHistoricalPortfolioValue(portfolio: List[PortfolioElement], source: String, resultCurrency: String, date: LocalDate): Double = ???
 
-  def compare(thisCcy1: String, thisCcy2: String, thatCcy1: String, thatCcy2: String, date: LocalDate): Option[QuoteComparison] = ???
+  def compare(thisCcy1: String, thisCcy2: String, thatCcy1: String, thatCcy2: String, source: String, date: LocalDate): Option[QuoteComparison] = ???
 
-  def getCurrencyPairHistory(ccy1: String, ccy2: String, date: LocalDate): List[Quote] = {
+  def getCurrencyPairHistory(ccy1: String, ccy2: String, source: String, date: LocalDate): List[Quote] = {
     val yesterday = date.minus(1, ChronoUnit.DAYS).toString()
     val tomorrow = date.plus(1, ChronoUnit.DAYS).toString()
 
-    val selectStatement = MongoDBObject(DbColumnNames.CCY1 -> ccy1, DbColumnNames.CCY2 -> ccy2) ++ (DbColumnNames.TIMESTAMP $gt yesterday $lt tomorrow)
+    val selectStatement = MongoDBObject(DbColumnNames.CCY1 -> ccy1, DbColumnNames.CCY2 -> ccy2, DbColumnNames.SOURCE -> source) ++ (DbColumnNames.TIMESTAMP $gt yesterday $lt tomorrow)
     val sortStatement = MongoDBObject(DbColumnNames.TIMESTAMP -> ASCENDING)
 
     collection
@@ -41,13 +41,13 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
 
   }
 
-  def getCurrencyPairHistory(ccy1: String, ccy2: String, from: LocalDate, to: LocalDate): List[Quote] = ???
+  def getCurrencyPairHistory(ccy1: String, ccy2: String, source: String, from: LocalDate, to: LocalDate): List[Quote] = ???
 
-  def getHighestPrice(ccy1: String, ccy2: String, date: LocalDate): Option[Quote] = {
+  def getHighestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = {
     val yesterday = date.minus(1, ChronoUnit.DAYS).toString()
     val tomorrow = date.plus(1, ChronoUnit.DAYS).toString()
 
-    val selectStatement = MongoDBObject(DbColumnNames.CCY1 -> ccy1, DbColumnNames.CCY2 -> ccy2) ++ (DbColumnNames.TIMESTAMP $gt yesterday $lt tomorrow)
+    val selectStatement = MongoDBObject(DbColumnNames.CCY1 -> ccy1, DbColumnNames.CCY2 -> ccy2, DbColumnNames.SOURCE -> source) ++ (DbColumnNames.TIMESTAMP $gt yesterday $lt tomorrow)
     val sortStatement = MongoDBObject(DbColumnNames.PRICE -> DESCENDING)
 
     collection
@@ -58,8 +58,8 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
       .translate()
   }
 
-  def getLowestPrice(ccy1: String, ccy2: String, date: LocalDate): Option[Quote] = ???
-  def getDailyMean(ccy1: String, ccy2: String, date: LocalDate): Option[Quote] = ???
+  def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
+  def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
 
   implicit class MongoResutToQuote(dbObject: DBObject) {
     def translate(): Option[Quote] = {

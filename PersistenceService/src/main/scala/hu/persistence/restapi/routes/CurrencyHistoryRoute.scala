@@ -11,19 +11,17 @@ import spray.http.MediaTypes.`application/json`
 import scala.concurrent.duration.DurationInt
 import akka.pattern.ask
 
-trait CurrencyHistoryRoute extends HttpService {
-  private implicit def ec = actorRefFactory.dispatcher
-  private implicit val timeout = Timeout(5 seconds)
-
-  def newWorker: ActorRef
+trait CurrencyHistoryRoute extends Route {
 
   def currencyHistoryRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("currencyPairHistory") {
-          parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
-            complete {
-              (newWorker ? CurrencyHistoryRequest(ccy1, ccy2, date)).mapTo[CurrencyHistoryReply].map { x => ObjMapper.objectMapper.writeValueAsString(x) }
+        path("currencyPairHistory" / Segment) { (source) =>
+          {
+            parameter('ccy1, 'ccy2, 'date) { (ccy1: String, ccy2: String, date: String) =>
+              complete {
+                (newWorker ? CurrencyHistoryRequest(ccy1, ccy2, source, date)).mapTo[CurrencyHistoryReply].map { x => ObjMapper.objectMapper.writeValueAsString(x) }
+              }
             }
           }
         }
