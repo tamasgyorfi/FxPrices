@@ -55,6 +55,34 @@ class DatabaseDataExtractorTest extends FunSuite with BeforeAndAfterAll with Fon
     assert(expectedQuote === quote)
   }
 
+  test("DatabaseDataExtractor -getLowestPrice- should be able to select the a currency pair with lowest value on a date - for YAHOO source") {
+    val quote = sut.getLowestPrice("USD", "KRW", "YAHOO", LocalDate.of(2016, 1, 11))
+    val expectedQuote = FxQuote("KRW", 0, 2.425, "2016-01-11T15:07:00+0000", "YAHOO")
+
+    assert(expectedQuote === quote.getOrElse(EmptyQuote))
+  }
+
+  test("DatabaseDataExtractor -getLowestPrice- should be able to select the a currency pair with lowest value on a date - for APILAYER source") {
+    val quote = sut.getLowestPrice("USD", "KRW", "APILAYER", LocalDate.of(2016, 1, 11))
+    val expectedQuote = allUsdKrwApiLayer(0)
+
+    assert(expectedQuote === quote.getOrElse(EmptyQuote))
+  }
+
+  test("DatabaseDataExtractor -getLowestPrice- should return empty, when we have no lowest price on a certain date ") {
+    val quote = sut.getLowestPrice("USD", "KRW", "YAHOO", LocalDate.of(2011, 1, 11))
+    val expectedQuote = Option.empty
+
+    assert(expectedQuote === quote)
+  }
+
+  test("DatabaseDataExtractor -getLowestPrice- should return empty, when the currency pair is unknown ") {
+    val quote = sut.getLowestPrice("USD", "UNKNOWN", "YAHOO", LocalDate.of(2011, 1, 11))
+    val expectedQuote = Option.empty
+
+    assert(expectedQuote === quote)
+  }
+
   test("DatabaseDataExtractor -getCurrencyPairHistory- should return all quotes on a specific date - YAHOO source") {
     val quotes = sut.getCurrencyPairHistory("USD", "KRW", "YAHOO", LocalDate.of(2016, 1, 11))
 

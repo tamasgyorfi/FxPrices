@@ -25,7 +25,16 @@ class WorkerActor(dataExtractor: DataExtractor) extends Actor {
         case ex: Exception => sender ! MaxPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
       }
     }
-    
-    
+
+    case MinPriceRequest(ccy1, ccy2, source, date) => {
+      try {
+        val localDate = LocalDate.parse(date)
+        val result = MinPriceReply(dataExtractor.getLowestPrice(ccy1, ccy2, source, localDate), "")
+        sender ! result
+      } catch {
+        case ex: Exception => sender ! MinPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
+      }
+    }
+
   }
 }

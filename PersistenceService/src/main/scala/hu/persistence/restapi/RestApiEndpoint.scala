@@ -5,9 +5,9 @@ import akka.actor.ActorRef
 import akka.actor.Props
 import hu.persistence.api.DataExtractor
 import hu.persistence.restapi.routes.CurrencyHistoryRoute
-import hu.persistence.restapi.routes.HighestPriceRoute
+import hu.persistence.restapi.routes.PricesRoute
 
-class RestApiEndpoint(dataExtractor: DataExtractor) extends CurrencyHistoryRoute with HighestPriceRoute with Actor {
+class RestApiEndpoint(dataExtractor: DataExtractor) extends CurrencyHistoryRoute with PricesRoute with Actor {
 
   implicit def actorRefFactory = context
 
@@ -16,6 +16,6 @@ class RestApiEndpoint(dataExtractor: DataExtractor) extends CurrencyHistoryRoute
   }
 
   def receive = runRoute {
-    currencyHistoryRoute ~ maxPriceRoute
+    currencyHistoryRoute ~ pricesRoute
   }
 }

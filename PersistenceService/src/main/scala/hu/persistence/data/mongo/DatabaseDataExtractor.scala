@@ -38,17 +38,25 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
       .filter(_.isDefined)
       .map(_.get)
       .toList
-
   }
 
   def getCurrencyPairHistory(ccy1: String, ccy2: String, source: String, from: LocalDate, to: LocalDate): List[Quote] = ???
 
   def getHighestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = {
-    val yesterday = date.minus(1, ChronoUnit.DAYS).toString()
+    getTopQuote(ccy1, ccy2, source, date, DESCENDING)
+  }
+
+  def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = {
+    getTopQuote(ccy1, ccy2, source, date, ASCENDING)
+  }
+  def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
+
+  private def getTopQuote(ccy1: String, ccy2: String, source: String, date: LocalDate, sortMode: Int): Option[Quote] = {
+        val yesterday = date.minus(1, ChronoUnit.DAYS).toString()
     val tomorrow = date.plus(1, ChronoUnit.DAYS).toString()
 
     val selectStatement = MongoDBObject(DbColumnNames.CCY1 -> ccy1, DbColumnNames.CCY2 -> ccy2, DbColumnNames.SOURCE -> source) ++ (DbColumnNames.TIMESTAMP $gt yesterday $lt tomorrow)
-    val sortStatement = MongoDBObject(DbColumnNames.PRICE -> DESCENDING)
+    val sortStatement = MongoDBObject(DbColumnNames.PRICE -> sortMode)
 
     collection
       .find(selectStatement)
@@ -57,10 +65,7 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
       .one()
       .translate()
   }
-
-  def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
-  def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
-
+  
   implicit class MongoResutToQuote(dbObject: DBObject) {
     def translate(): Option[Quote] = {
       if (dbObject == null) {
