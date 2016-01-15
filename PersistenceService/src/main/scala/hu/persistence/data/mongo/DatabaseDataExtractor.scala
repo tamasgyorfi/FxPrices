@@ -52,27 +52,22 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
   def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = {
     getTopQuote(ccy1, ccy2, source, date, ASCENDING)
   }
-  
+
   def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = {
     val yesterday = date.minus(1, ChronoUnit.DAYS).toString()
     val tomorrow = date.plus(1, ChronoUnit.DAYS).toString()
 
     val selectStatement = getQueryStatement(ccy1, ccy2, source, yesterday, tomorrow)
 
-    val quotes = collection
+    collection
       .aggregate(List(
         MongoDBObject("$match" -> selectStatement),
         MongoDBObject("$group" -> MongoDBObject("_id" -> DbColumnNames.SOURCE,
-          DbColumnNames.AVERAGE -> MongoDBObject("$avg" -> DbColumnNames.PRICE_OPERATOR)))))
+          DbColumnNames.AVERAGE -> MongoDBObject("$avg" -> DbColumnNames.PRICE_OPERATOR),
+          DbColumnNames.PRODUCT -> MongoDBObject("$first" -> DbColumnNames.PRODUCT_OPERATOR)))))
       .results
-      .map(dbObject => FxQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source))
-      .toList
-      
-    if (quotes.size > 0) {
-      Option(quotes(0))
-    } else {
-      Option.empty
-    }
+      .map(getQuote(ccy2, date, source))
+      .find(_ => true)
   }
 
   private def getTopQuote(ccy1: String, ccy2: String, source: String, date: LocalDate, sortMode: Int): Option[Quote] = {
@@ -85,7 +80,6 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
     collection
       .find(selectStatement)
       .sort(sortStatement)
-      .limit(1)
       .one()
       .translate()
   }
@@ -108,6 +102,17 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
           dbObject.as[String](DbColumnNames.SOURCE)))
       }
     }
+  }
+
+  def getQuote(ccy2: String, date: LocalDate, source: String): DBObject => Quote = {
+    dbObject =>
+      {
+        if (dbObject.get(DbColumnNames.PRODUCT).asInstanceOf[String].contains("Fx")) {
+          FxQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source)
+        } else {
+          PmQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source)
+        }
+      }
   }
 
 }

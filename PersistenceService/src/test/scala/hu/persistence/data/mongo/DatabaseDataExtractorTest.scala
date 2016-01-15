@@ -12,6 +12,7 @@ import hu.persistence.FongoFixture
 import hu.persistence.TestData
 import org.scalatest.fixture.FlatSpecLike
 import org.scalatest.WordSpecLike
+import hu.fx.data.PmQuote
 
 class DatabaseDataExtractorTest extends WordSpecLike with BeforeAndAfterAll with FongoFixture with TestData {
 
@@ -122,6 +123,12 @@ class DatabaseDataExtractorTest extends WordSpecLike with BeforeAndAfterAll with
       val quotes = sut.getDailyMean("USD", "KRW", "YAHOO", LocalDate.of(2016, 1, 11))
 
       assert(FxQuote("KRW", 0, 2972.0769026249995, "2016-01-11", "YAHOO") === quotes.getOrElse(EmptyQuote))
+    }
+
+    "return mean on a specific date - YAHOO source for PM quote" in {
+      val quotes = sut.getDailyMean("USD", "PALLADIUM 1 OZ", "YAHOO", LocalDate.of(2016, 1, 8))
+
+      assert(PmQuote("PALLADIUM 1 OZ", 0, 0.002026, "2016-01-08", "YAHOO") === quotes.getOrElse(EmptyQuote))
     }
 
     "return mean on a specific date - ApiLayer source" in {

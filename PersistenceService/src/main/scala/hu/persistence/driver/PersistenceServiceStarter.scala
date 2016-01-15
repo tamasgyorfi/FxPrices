@@ -16,6 +16,7 @@ import hu.persistence.restapi.RestApiEndpoint
 import hu.persistence.data.mongo.DatabaseDataExtractor
 import org.scalatest.TestData
 import java.time.LocalDate
+import hu.persistence.FongoFixture
 
 trait PersistenceServiceStarter extends Config {
 
@@ -57,6 +58,10 @@ object PersistenceServerStarter {
 
 object PersistenceServiceLocal {
   def main(args: Array[String]) = {
+    class Starter() extends FongoFixture
+    val c = new Starter()
+    c.insertTestData()
+    val n = new DatabaseDataExtractor(c.mongoCollection).getDailyMean("USD", "PALLADIUM 1 OZ", "YAHOO", LocalDate.of(2016, 1, 8))
     /*
   		 Can be used for testing, will not connect to other services
 	     new DatabaseDataExtractor(mongoCollection).
