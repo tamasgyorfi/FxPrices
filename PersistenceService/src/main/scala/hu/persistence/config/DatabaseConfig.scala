@@ -18,9 +18,10 @@ trait DatabaseConfig extends Config {
   val connection = MongoClient(SERVER, PORT)
   val collection = connection(DATABASE)(COLLECTION)
 
+  val jmsHandler = new hu.persistence.messaging.jms.ActiveMQHandler()
   val messageExtractor = new ObjectMessageExtractor()
   val dataHandlingManager = new SimpleDataHandlingManager(DataHandlerType.DATABASE, collection)
-  val messageReceiver = new ForwardingMessageReceiver(messageExtractor, dataHandlingManager.getDataPersister())
+  val messageReceiver = new ForwardingMessageReceiver(jmsHandler, messageExtractor, dataHandlingManager.getDataPersister())
   val monitoringManager = MonitoringManager("PersistenceService", new ActiveMQHandler(ParamsSupplier.getParam(ParamsSupplier.BROKER_ENDPOINT), ParamsSupplier.getParam(ParamsSupplier.MONITORING_DESTINATION)))
 
 }

@@ -13,3 +13,6 @@ case class MaxPriceReply(quote: Option[Quote], errorMessage: String) extends Mes
 
 case class MinPriceRequest(ccy1: String, ccy2: String, source: String, date:String) extends Message
 case class MinPriceReply(quote: Option[Quote], errorMessage: String) extends Message
+
+case class MeanPriceRequest(ccy1: String, ccy2: String, source: String, date:String) extends Message
+case class MeanPriceReply(quote: Option[Quote], errorMessage: String) extends Message

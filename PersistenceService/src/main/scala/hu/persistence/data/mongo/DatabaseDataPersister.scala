@@ -40,6 +40,7 @@ class DatabaseDataPersister(collection: MongoCollection) extends DataPersister {
       collection.save(dbObject)
     } catch {
       case ex: Exception => {
+        ex.printStackTrace()
         handleException(ex, quote)
       }
     }

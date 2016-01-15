@@ -2,10 +2,11 @@ package hu.persistence.messaging.messagehandling
 
 import javax.jms.MessageListener
 import hu.persistence.messaging.jms.ActiveMQHandler
+import hu.persistence.messaging.jms.JmsHandler
 
-abstract class AbstractMessageReceiver extends ActiveMQHandler with MessageListener{
+abstract class AbstractMessageReceiver(jmsHandler: JmsHandler) extends MessageListener {
 
-    def start = messageReceiver.setMessageListener(this)
-    def startListening
+  def start = jmsHandler.messageReceiver.setMessageListener(this)
+  def startListening
 
 }

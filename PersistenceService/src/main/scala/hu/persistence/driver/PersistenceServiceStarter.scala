@@ -13,6 +13,9 @@ import hu.persistence.config.Config
 import hu.persistence.config.DatabaseConfig
 import spray.can.Http
 import hu.persistence.restapi.RestApiEndpoint
+import hu.persistence.data.mongo.DatabaseDataExtractor
+import org.scalatest.TestData
+import java.time.LocalDate
 
 trait PersistenceServiceStarter extends Config {
 
@@ -46,17 +49,17 @@ trait PersistenceServiceStarter extends Config {
 
 object PersistenceServerStarter {
   def main(args: Array[String]) = {
-    val receiver = {
-      class Starter() extends PersistenceServiceStarter with DatabaseConfig
-      val starter = new Starter()
-      starter.startService()
-    }
+    class Starter() extends PersistenceServiceStarter with DatabaseConfig
+    val starter = new Starter()
+    val future = starter.startService()
   }
 }
 
 object PersistenceServiceLocal {
   def main(args: Array[String]) = {
-    // Can be used for testing, will not connect to other services
-    // new DatabaseDataExtractor(MongoConfig.collection).
+    /*
+  		 Can be used for testing, will not connect to other services
+	     new DatabaseDataExtractor(mongoCollection).
+    */
   }
 }

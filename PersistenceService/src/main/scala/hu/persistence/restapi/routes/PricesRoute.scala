@@ -14,6 +14,8 @@ import hu.persistence.restapi.MaxPriceRequest
 import hu.persistence.restapi.MaxPriceReply
 import hu.persistence.restapi.MinPriceRequest
 import hu.persistence.restapi.MinPriceReply
+import hu.persistence.restapi.MeanPriceRequest
+import hu.persistence.restapi.MeanPriceReply
 
 trait PricesRoute extends Route {
 
@@ -30,17 +32,28 @@ trait PricesRoute extends Route {
           }
         }
       } ~
-      respondWithMediaType(`application/json`) {
-        path("minPrice" / Segment) { (source) =>
-          {
-            parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
-              complete {
-                (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[MinPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+        respondWithMediaType(`application/json`) {
+          path("minPrice" / Segment) { (source) =>
+            {
+              parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
+                complete {
+                  (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[MinPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                }
+              }
+            }
+          }
+        } ~
+        respondWithMediaType(`application/json`) {
+          path("meanPrice" / Segment) { (source) =>
+            {
+              parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
+                complete {
+                  (newWorker ? MeanPriceRequest(ccy1, ccy2, source, date)).mapTo[MeanPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                }
               }
             }
           }
         }
-      }
     }
   }
 }

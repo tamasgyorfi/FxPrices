@@ -5,8 +5,9 @@ import hu.persistence.data.DataPersister
 import javax.jms.Message
 import javax.jms.ObjectMessage
 import hu.monitoring.MonitoringManager
+import hu.persistence.messaging.jms.JmsHandler
 
-class ForwardingMessageReceiver(messageExtractor: MessageExtractor, dataPersister: DataPersister) extends AbstractMessageReceiver {
+class ForwardingMessageReceiver(jmsHandler: JmsHandler, messageExtractor: MessageExtractor, dataPersister: DataPersister) extends AbstractMessageReceiver(jmsHandler) {
 
   val logger = LoggerFactory.getLogger(this.getClass)
 

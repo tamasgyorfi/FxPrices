@@ -8,4 +8,15 @@ object DbColumnNames {
   val SOURCE = "source"
   val TIMESTAMP = "timestamp"
   val PRODUCT = "productType"
+  
+  val AVERAGE = "average"
+  val AVERAGE_OPERATOR = "$average"
+
+  val CCY1_OPERATOR = "$ccy1"
+  val CCY2_OPERATOR = "$ccy2"
+  val PRICE_OPERATOR = "$price"
+  val QUOTE_UNIT_OPERATOR = "$quoteUnit"
+  val SOURCE_OPERATOR = "$source"
+  val TIMESTAMP_OPERATOR = "$timestamp"
+  val PRODUCT_OPERATOR = "$productType"
 }

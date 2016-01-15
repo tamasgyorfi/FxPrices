@@ -1,8 +1,9 @@
 package hu.persistence.restapi
 
+import java.time.LocalDate
+
 import akka.actor.Actor
 import hu.persistence.api.DataExtractor
-import java.time.LocalDate
 
 class WorkerActor(dataExtractor: DataExtractor) extends Actor {
 
@@ -33,6 +34,16 @@ class WorkerActor(dataExtractor: DataExtractor) extends Actor {
         sender ! result
       } catch {
         case ex: Exception => sender ! MinPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
+      }
+    }
+
+    case MeanPriceRequest(ccy1, ccy2, source, date) => {
+      try {
+        val localDate = LocalDate.parse(date)
+        val result = MeanPriceReply(dataExtractor.getDailyMean(ccy1, ccy2, source, localDate), "")
+        sender ! result
+      } catch {
+        case ex: Exception => sender ! MeanPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
       }
     }
 
