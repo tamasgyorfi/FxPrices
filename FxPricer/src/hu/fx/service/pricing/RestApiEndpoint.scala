@@ -19,10 +19,16 @@ import spray.json.DefaultJsonProtocol._
 import spray.routing.HttpService
 import hu.fx.service.messaging.RequestSender
 import hu.monitoring.MonitoringManager
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
-class RestApiEndpoint(requestSender:RequestSender) extends Actor with HttpService {
+class RestApiEndpoint(requestSender: RequestSender) extends Actor with HttpService {
   private val appDriver = context.actorOf(Props(new PriceEngine(requestSender)), name = "PriceEngine")
-
+  private val objectMapper = {
+    val mapper = new ObjectMapper
+    mapper.registerModule(DefaultScalaModule)
+    mapper
+  }
   private implicit val timeout = Timeout(5 seconds)
 
   def actorRefFactory = context
@@ -36,7 +42,7 @@ class RestApiEndpoint(requestSender:RequestSender) extends Actor with HttpServic
     get {
       respondWithMediaType(`application/json`) {
         path("getCurrency") {
-          parameter('ccy1, 'ccy2.?) { (ccy1, ccy2) => handleCurrencyRequests(ccy1, ccy2)
+          parameter('ccy1, 'ccy2.?) { (ccy1, ccy2) => complete { handleCurrencyRequests(ccy1, ccy2) }
           }
         }
       }
@@ -45,25 +51,8 @@ class RestApiEndpoint(requestSender:RequestSender) extends Actor with HttpServic
 
   private def handleCurrencyRequests(ccy1: String, ccy2: Option[String]) = {
     ccy1 match {
-      case "all" => handleFuture(appDriver ? AllQuotesApiRequest)
-      case _     => handleFuture(appDriver ? QuoteApiRequest(ccy1, ccy2.getOrElse("EUR")))
-    }
-  }
-
-  private def handleFuture[A](future: Future[Any]) = {
-    onComplete(future) {
-
-      case Success(message) => {
-        val result = message.asInstanceOf[ReplyMessage[A]].getResult()
-        complete(JsonHandler.responseAsJson(result))
-      }
-
-      case Failure(ex) => {
-        MonitoringManager.reportWarning(s"Exception while trying to respond. [AllQuotesApiRequest]. Exception was: {$ex}")
-        complete(JsonHandler.exceptionAsJson(ex))
-      }
-
-      case _ => complete(JsonHandler.unknownErrorAsJson)
+      case "all" => (appDriver ? AllQuotesApiRequest).mapTo[AllQuotesApiReply].map { x => objectMapper.writeValueAsString(x) }
+      case _     => (appDriver ? QuoteApiRequest(ccy1, ccy2.getOrElse("EUR"))).mapTo[QuoteApiReply].map { x => objectMapper.writeValueAsString(x) }
     }
   }
 }

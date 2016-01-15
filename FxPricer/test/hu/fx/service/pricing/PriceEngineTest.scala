@@ -36,7 +36,7 @@ class PriceEngineTest extends TestKit(ActorSystem("testSystem")) with WordSpecLi
 
         restActorRef ! ApplicationStart
         restActorRef ! QuoteApiRequest("USD", "HUF")
-        expectMsg(QuoteApiReply(List(FxQuote("HUF", 1, 1, "", "YAHOO"), FxQuote("HUF", 1, 1, "", "APILAYER"))))
+        expectMsg(QuoteApiReply(List(FxQuote("HUF", 1, 1, "", "YAHOO"), FxQuote("HUF", 1, 1, "", "APILAYER")), ""))
       }
     }
   }
@@ -47,7 +47,7 @@ class PriceEngineTest extends TestKit(ActorSystem("testSystem")) with WordSpecLi
 
         restActorRef ! ApplicationStart
         restActorRef ! AllQuotesApiRequest
-        expectMsg(AllQuotesApiReply(Map().updated("YAHOO", quotes1).updated("APILAYER", quotes2)))
+        expectMsg(AllQuotesApiReply(Map().updated("YAHOO", quotes1).updated("APILAYER", quotes2), ""))
       }
     }
   }
