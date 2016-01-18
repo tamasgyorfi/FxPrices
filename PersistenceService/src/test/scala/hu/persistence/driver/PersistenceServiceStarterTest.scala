@@ -1,29 +1,25 @@
 package hu.persistence.driver
 
+import java.net.URL
+
+import scala.io.Source
+
+import org.mockito.Mockito.when
 import org.scalatest.WordSpecLike
 import org.scalatest.mock.MockitoSugar
+
 import hu.fx.data.FxQuote
 import hu.fx.data.Quote
-import hu.persistence.FongoFixture
-import hu.persistence.config.DatabaseConfig
-import javax.jms.ObjectMessage
-import org.mockito.Mockito._
-import java.net.URL
-import scala.io.Source
-import javax.jms.MessageConsumer
-import hu.persistence.config.Config
 import hu.monitoring.MonitoringManager
-import hu.persistence.messaging.messagehandling.ObjectMessageExtractor
-import hu.persistence.messaging.messagehandling.ForwardingMessageReceiver
-import hu.persistence.api.DataHandlerType
-import hu.persistence.data.SimpleDataHandlingManager
-import com.mongodb.connection.ConnectionFactory
-import org.apache.activemq.ActiveMQConnectionFactory
-import javax.jms.Connection
-import javax.jms.Session
-import hu.persistence.messaging.jms.JmsHandler
-import hu.persistence.messaging.jms.JmsHandler
 import hu.persistence.FongoFixture
+import hu.persistence.api.DataHandlerType
+import hu.persistence.config.Config
+import hu.persistence.data.SimpleDataHandlingManager
+import hu.persistence.messaging.jms.JmsHandler
+import hu.persistence.messaging.messagehandling.ForwardingMessageReceiver
+import hu.persistence.messaging.messagehandling.ObjectMessageExtractor
+import javax.jms.MessageConsumer
+import javax.jms.ObjectMessage
 
 trait TestConfig extends Config with MockitoSugar with FongoFixture {
 
