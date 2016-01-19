@@ -21,7 +21,14 @@
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6ce"}, "ccy1" : "USD", "ccy2" : "AZN", "productType" : "FxQuote", "price" : 1.56675, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:07:10+0000" }
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6cf"}, "ccy1" : "USD", "ccy2" : "INR", "productType" : "FxQuote", "price" : 66.809998, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:09:30+0000" }
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6d0"}, "ccy1" : "USD", "ccy2" : "MGA", "productType" : "FxQuote", "price" : 3195.449951, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:07:00+0000" }
-{ "_id" : {$oid:"5693c65fc3a5ea24a862b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.41334, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a862b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.1334, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-10T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a862b7d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.4334, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a862b8d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.4134, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a862b9d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.4133, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a863b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.334, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-15T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a864b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.434, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-16T15:11:27+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a865b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.414, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-16T23:59:59+0000" }
+{ "_id" : {$oid:"5693c65fc3a5ea24a866b6d1"}, "ccy1" : "USD", "ccy2" : "CAD", "productType" : "FxQuote", "price" : 1.413, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-17T00:00:00+0000" }
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6d2"}, "ccy1" : "USD", "ccy2" : "XAF", "productType" : "FxQuote", "price" : 601.98877, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:07:10+0000" }
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6d3"}, "ccy1" : "USD", "ccy2" : "LBP", "productType" : "FxQuote", "price" : 1506.5, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:07:00+0000" }
 { "_id" : {$oid:"5693c65fc3a5ea24a862b6d4"}, "ccy1" : "USD", "ccy2" : "XDR", "productType" : "FxQuote", "price" : 0.72175, "quoteUnit" : 0, "source" : "YAHOO", "timestamp" : "2016-01-11T15:07:10+0000" }

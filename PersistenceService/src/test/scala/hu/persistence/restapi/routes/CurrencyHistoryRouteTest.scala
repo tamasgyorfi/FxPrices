@@ -33,7 +33,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
     actorRefFactory.actorOf(Props(new WorkerActor(dataExtractor)))
   }
 
-  test("RestApiEndpoint should return the history of a currency pair with no error") {
+  test("RestApiEndpoint should return the history of a currency pair on a specific date with no error") {
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
@@ -73,4 +73,35 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
     }
   }
 
+  test("RestApiEndpoint should return the history of a currency pair between two dates with no error") {
+
+    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-15") ~> currencyHistoryRoute ~> check {
+      val response = responseAs[String]
+      assert(response === """{"quotes":[{"ccy2":"CAD","quoteUnit":0,"price":1.4334,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4134,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4133,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.334,"timestamp":"2016-01-15T15:11:27+0000","source":"YAHOO","ccy1":"USD"}],"errorMessage":""}""")
+    }
+  }
+
+  test("RestApiEndpoint should return empty list of a currency pair with no error when there is no data between two dates") {
+
+    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2011-01-11&to=2011-01-15") ~> currencyHistoryRoute ~> check {
+      val response = responseAs[String]
+      assert(response === """{"quotes":[],"errorMessage":""}""")
+    }
+  }
+
+  test("RestApiEndpoint should return an error message when the first date is not parsable") {
+
+    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-111&to=2016-01-15") ~> currencyHistoryRoute ~> check {
+      val response = responseAs[String]
+      assert(response === """{"quotes":[],"errorMessage":"Error: Unable to parse request for USD, CAD, 2016-01-111 and 2016-01-15"}""")
+    }
+  }
+
+  test("RestApiEndpoint should return an error message when the second date is not parsable") {
+
+    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-155") ~> currencyHistoryRoute ~> check {
+      val response = responseAs[String]
+      assert(response === """{"quotes":[],"errorMessage":"Error: Unable to parse request for USD, CAD, 2016-01-11 and 2016-01-155"}""")
+    }
+  }
 }

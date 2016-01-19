@@ -15,7 +15,7 @@ trait Quote {
   override def equals(that: Any): Boolean = that match {
     case q: Quote => {
       val quote = that.asInstanceOf[Quote]
-      quote.ccy1.equals(ccy1) && quote.ccy2.equals(ccy2) && quote.source.equals(source) && quote.price.equals(price)
+      quote.ccy1.equals(ccy1) && quote.ccy2.equals(ccy2) && quote.source.equals(source) && quote.price.equals(price) && quote.timestamp.equals(timestamp)
     }
     case _ => false
   }

@@ -6,12 +6,12 @@ import hu.fx.data.EmptyQuote
 
 trait TestData {
   val validQuotes = List(
-    new FxQuote("CHF", 1, 32.2, "", "source"),
-    new PmQuote("XAU", 1, 11111.1, "", "source"),
+    FxQuote("CHF", 1, 32.2, "", "source"),
+    PmQuote("XAU", 1, 11111.1, "", "source"),
     FxQuote("EUR", 1, 11.99, "", "source")("HUF"))
 
   val mixedQuotes = List(
-    new FxQuote("CHF", 1, 32.2, "", "source"),
+    FxQuote("CHF", 1, 32.2, "", "source"),
     EmptyQuote,
     FxQuote("EUR", 1, 11.99, "", "source")("HUF"))
 
@@ -27,4 +27,18 @@ trait TestData {
 
   val allUsdKrwApiLayer = List(
     FxQuote("KRW", 1, 1204.234985, "2016-01-11T17:12:13+0000", "APILAYER")("USD"))
+
+  val allUsdCadYahoo = List(
+    FxQuote("CAD", 0, 1.4334, "2016-01-11T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.4134, "2016-01-11T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.4133, "2016-01-11T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.334, "2016-01-15T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.434, "2016-01-16T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.414, "2016-01-16T23:59:59+0000", "YAHOO"))
+
+  val usdCadYahooOnCertainDate = List(
+    FxQuote("CAD", 0, 1.4334, "2016-01-11T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.4134, "2016-01-11T15:11:27+0000", "YAHOO"),
+    FxQuote("CAD", 0, 1.4133, "2016-01-11T15:11:27+0000", "YAHOO"))
+
 }
