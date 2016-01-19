@@ -11,13 +11,9 @@ case class CurrencyHistoryRequestRange(ccy1: String, ccy2: String, source: Strin
 case class CurrencyHistoryReply(quotes: List[Quote], errorMessage:String) extends Message
 
 case class MaxPriceRequest(ccy1: String, ccy2: String, source: String, date:String) extends Message
-case class MaxPriceReply(quote: Option[Quote], errorMessage: String) extends Message
-
 case class MinPriceRequest(ccy1: String, ccy2: String, source: String, date:String) extends Message
-case class MinPriceReply(quote: Option[Quote], errorMessage: String) extends Message
-
 case class MeanPriceRequest(ccy1: String, ccy2: String, source: String, date:String) extends Message
-case class MeanPriceReply(quote: Option[Quote], errorMessage: String) extends Message
+case class PriceReply(quote: Option[Quote], errorMessage: String) extends Message
 
 case class ComparisonRequest(firstCcy1:String, firstCcy2:String, secondCcy1:String, secondCcy2:String, source:String, date:String) extends Message
 case class ComparisonReply(comparison: Option[QuoteComparison], errorMessage: String) extends Message

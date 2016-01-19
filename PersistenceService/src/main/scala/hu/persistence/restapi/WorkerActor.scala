@@ -32,28 +32,28 @@ class WorkerActor(dataExtractor: DataExtractor) extends Actor {
 
     case MaxPriceRequest(ccy1, ccy2, source, date) => {
       try {
-        val result = MaxPriceReply(dataExtractor.getHighestPrice(ccy1, ccy2, source, date), "")
+        val result = PriceReply(dataExtractor.getHighestPrice(ccy1, ccy2, source, date), "")
         sender ! result
       } catch {
-        case ex: Exception => sender ! MaxPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
+        case ex: Exception => sender ! PriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
       }
     }
 
     case MinPriceRequest(ccy1, ccy2, source, date) => {
       try {
-        val result = MinPriceReply(dataExtractor.getLowestPrice(ccy1, ccy2, source, date), "")
+        val result = PriceReply(dataExtractor.getLowestPrice(ccy1, ccy2, source, date), "")
         sender ! result
       } catch {
-        case ex: Exception => sender ! MinPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
+        case ex: Exception => sender ! PriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
       }
     }
 
     case MeanPriceRequest(ccy1, ccy2, source, date) => {
       try {
-        val result = MeanPriceReply(dataExtractor.getDailyMean(ccy1, ccy2, source, date), "")
+        val result = PriceReply(dataExtractor.getDailyMean(ccy1, ccy2, source, date), "")
         sender ! result
       } catch {
-        case ex: Exception => sender ! MeanPriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
+        case ex: Exception => sender ! PriceReply(Option.empty, s"Error: Unable to parse request for ${ccy1}, ${ccy2} and ${date}")
       }
     }
 

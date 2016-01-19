@@ -1,19 +1,23 @@
 package hu.persistence.restapi.routes
 
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.FunSuite
+
+import com.fasterxml.jackson.databind.ObjectMapper
+
+import akka.actor.ActorRef
+import akka.actor.Props
+import hu.fx.data.Quote
 import hu.persistence.FongoFixture
+import hu.persistence.QuoteDeserializer
+import hu.persistence.TestData
 import hu.persistence.data.mongo.DatabaseDataExtractor
+import hu.persistence.restapi.CurrencyHistoryReply
+import hu.persistence.restapi.CurrencyHistoryReply
+import hu.persistence.restapi.WorkerActor
+import spray.httpx.SprayJsonSupport._
 import spray.routing.HttpService
 import spray.testkit.Specs2RouteTest
-import akka.actor.Props
-import akka.actor.ActorRef
-import org.scalatest.BeforeAndAfterAll
-import spray.httpx.SprayJsonSupport._
-import spray.json._
-import hu.persistence.TestData
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import hu.persistence.restapi.WorkerActor
 
 class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with Specs2RouteTest with HttpService with FongoFixture with TestData with BeforeAndAfterAll {
 
@@ -37,7 +41,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[{"ccy2":"KRW","quoteUnit":0,"price":2.425,"timestamp":"2016-01-11T15:07:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":20.385,"timestamp":"2016-01-11T15:07:01+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":78.408951,"timestamp":"2016-01-11T15:07:02+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.91,"timestamp":"2016-01-11T15:07:03+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":22450.0,"timestamp":"2016-01-11T15:07:04+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":7.99125,"timestamp":"2016-01-11T15:07:10+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.35,"timestamp":"2016-01-11T15:09:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":1204.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"}],"errorMessage":""}""")
+      assert(listEqual(allUsdKrwYahoo, getResponseAsObject(response).quotes))
     }
   }
 
@@ -45,7 +49,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":""}""")
+      assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
   }
 
@@ -53,7 +57,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USDDD&ccy2=KRW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":""}""")
+      assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
   }
 
@@ -61,7 +65,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KPW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":""}""")
+      assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
   }
 
@@ -69,7 +73,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-111") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":"Error: Unable to parse request for USD, KRW and 2001-01-111"}""")
+      assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, KRW and 2001-01-111") === getResponseAsObject(response))
     }
   }
 
@@ -77,7 +81,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[{"ccy2":"CAD","quoteUnit":0,"price":1.4334,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4134,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4133,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.334,"timestamp":"2016-01-15T15:11:27+0000","source":"YAHOO","ccy1":"USD"}],"errorMessage":""}""")
+      assert(listEqual(List(CAD1, CAD2, CAD3, CAD4), getResponseAsObject(response).quotes))
     }
   }
 
@@ -85,7 +89,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2011-01-11&to=2011-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":""}""")
+      assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
   }
 
@@ -93,7 +97,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-111&to=2016-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":"Error: Unable to parse request for USD, CAD, 2016-01-111 and 2016-01-15"}""")
+      assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, CAD, 2016-01-111 and 2016-01-15") === getResponseAsObject(response))
     }
   }
 
@@ -101,7 +105,19 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
     Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-155") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"quotes":[],"errorMessage":"Error: Unable to parse request for USD, CAD, 2016-01-11 and 2016-01-155"}""")
+      assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, CAD, 2016-01-11 and 2016-01-155") === getResponseAsObject(response))
     }
+  }
+
+  def listEqual(list1: List[Quote], list2: List[Quote]) = {
+    if (list1.size != list2.size) {
+      false
+    } else {
+      list1.forall(list2.contains(_)) && list2.forall(list1.contains(_))
+    }
+  }
+
+  def getResponseAsObject(response: String) = {
+    QuoteDeserializer.mapper.readValue(response, classOf[CurrencyHistoryReply])
   }
 }

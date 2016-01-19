@@ -11,11 +11,9 @@ import spray.http.MediaTypes.`application/json`
 import scala.concurrent.duration.DurationInt
 import akka.pattern.ask
 import hu.persistence.restapi.MaxPriceRequest
-import hu.persistence.restapi.MaxPriceReply
+import hu.persistence.restapi.PriceReply
 import hu.persistence.restapi.MinPriceRequest
-import hu.persistence.restapi.MinPriceReply
 import hu.persistence.restapi.MeanPriceRequest
-import hu.persistence.restapi.MeanPriceReply
 
 trait PricesRoute extends Route {
 
@@ -26,7 +24,7 @@ trait PricesRoute extends Route {
           {
             parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
               complete {
-                (newWorker ? MaxPriceRequest(ccy1, ccy2, source, date)).mapTo[MaxPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                (newWorker ? MaxPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
               }
             }
           }
@@ -37,7 +35,7 @@ trait PricesRoute extends Route {
             {
               parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
                 complete {
-                  (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[MinPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                  (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
                 }
               }
             }
@@ -48,7 +46,7 @@ trait PricesRoute extends Route {
             {
               parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
                 complete {
-                  (newWorker ? MeanPriceRequest(ccy1, ccy2, source, date)).mapTo[MeanPriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                  (newWorker ? MeanPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
                 }
               }
             }

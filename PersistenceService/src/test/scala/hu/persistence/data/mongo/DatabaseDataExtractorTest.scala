@@ -1,13 +1,14 @@
 package hu.persistence.data.mongo
 
 import java.time.LocalDate
+
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.WordSpecLike
+
 import hu.fx.data.EmptyQuote
 import hu.fx.data.FxQuote
 import hu.persistence.FongoFixture
 import hu.persistence.TestData
-import hu.persistence.api.QuoteComparison
 
 class DatabaseDataExtractorTest extends WordSpecLike with BeforeAndAfterAll with FongoFixture with TestData {
 

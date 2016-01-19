@@ -10,6 +10,13 @@ import akka.actor.Props
 import hu.persistence.restapi.WorkerActor
 import hu.persistence.data.mongo.DatabaseDataExtractor
 import akka.actor.ActorRef
+import hu.persistence.restapi.ComparisonReply
+import hu.persistence.restapi.ComparisonReply
+import hu.persistence.QuoteDeserializer
+import hu.fx.data.Quote
+import hu.persistence.restapi.ComparisonReply
+import hu.persistence.restapi.ComparisonReply
+import hu.persistence.restapi.ComparisonReply
 
 class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2RouteTest with HttpService with FongoFixture with TestData with BeforeAndAfterAll {
 
@@ -33,7 +40,8 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
 
     Get("/compare/YAHOO?q1_ccy1=USD&q1_ccy2=KRW&q2_ccy1=USD&q2_ccy2=CAD&date=2016-01-11") ~> comparisonRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"comparison":{"quote1":[{"ccy2":"KRW","quoteUnit":0,"price":2.425,"timestamp":"2016-01-11T15:07:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":20.385,"timestamp":"2016-01-11T15:07:01+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":78.408951,"timestamp":"2016-01-11T15:07:02+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.91,"timestamp":"2016-01-11T15:07:03+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":22450.0,"timestamp":"2016-01-11T15:07:04+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":7.99125,"timestamp":"2016-01-11T15:07:10+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.35,"timestamp":"2016-01-11T15:09:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":1204.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"}],"quote2":[{"ccy2":"CAD","quoteUnit":0,"price":1.4334,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4134,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4133,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"}]},"errorMessage":""}""")
+      assert(listEqual(allUsdKrwYahoo, getResponseAsObject(response).comparison.get.quote1))
+      assert(listEqual(usdCadYahooOnCertainDate, getResponseAsObject(response).comparison.get.quote2))
     }
   }
 
@@ -41,7 +49,7 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
 
     Get("/compare/YAHOO?q1_ccy1=RON&q1_ccy2=HUF&q2_ccy1=SEK&q2_ccy2=NOK&date=2016-01-11") ~> comparisonRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"comparison":null,"errorMessage":""}""")
+      assert(ComparisonReply(None, "") === getResponseAsObject(response))
     }
   }
 
@@ -49,7 +57,8 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
 
     Get("/compare/YAHOO?q1_ccy1=HUF&q1_ccy2=KRW&q2_ccy1=USD&q2_ccy2=CAD&date=2016-01-11") ~> comparisonRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"comparison":{"quote1":[],"quote2":[{"ccy2":"CAD","quoteUnit":0,"price":1.4334,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4134,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CAD","quoteUnit":0,"price":1.4133,"timestamp":"2016-01-11T15:11:27+0000","source":"YAHOO","ccy1":"USD"}]},"errorMessage":""}""")
+      assert(listEqual(Nil, getResponseAsObject(response).comparison.get.quote1))
+      assert(listEqual(usdCadYahooOnCertainDate, getResponseAsObject(response).comparison.get.quote2))
     }
   }
 
@@ -57,7 +66,8 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
 
     Get("/compare/YAHOO?q1_ccy1=USD&q1_ccy2=KRW&q2_ccy1=HUF&q2_ccy2=CAD&date=2016-01-11") ~> comparisonRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"comparison":{"quote1":[{"ccy2":"KRW","quoteUnit":0,"price":2.425,"timestamp":"2016-01-11T15:07:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":20.385,"timestamp":"2016-01-11T15:07:01+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":78.408951,"timestamp":"2016-01-11T15:07:02+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.91,"timestamp":"2016-01-11T15:07:03+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":22450.0,"timestamp":"2016-01-11T15:07:04+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":7.99125,"timestamp":"2016-01-11T15:07:10+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":6.35,"timestamp":"2016-01-11T15:09:00+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"KRW","quoteUnit":0,"price":1204.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"}],"quote2":[]},"errorMessage":""}""")
+      assert(listEqual(allUsdKrwYahoo, getResponseAsObject(response).comparison.get.quote1))
+      assert(listEqual(Nil, getResponseAsObject(response).comparison.get.quote2))
     }
   }
 
@@ -65,8 +75,19 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
 
     Get("/compare/YAHOO?q1_ccy1=USD&q1_ccy2=KRW&q2_ccy1=USD&q2_ccy2=CAD&date=2016-01-111") ~> comparisonRoute ~> check {
       val response = responseAs[String]
-      assert(response === """{"comparison":null,"errorMessage":"Error: Unable to parse request for USD, KRW, USD, CAD, YAHOO and 2016-01-111"}""")
+      assert(ComparisonReply(None, "Error: Unable to parse request for USD, KRW, USD, CAD, YAHOO and 2016-01-111") === getResponseAsObject(response))
     }
   }
 
+  def listEqual(list1: List[Quote], list2: List[Quote]) = {
+    if (list1.size != list2.size) {
+      false
+    } else {
+      list1.forall(list2.contains(_)) && list2.forall(list1.contains(_))
+    }
+  }
+
+  def getResponseAsObject(response: String) = {
+    QuoteDeserializer.mapper.readValue(response, classOf[ComparisonReply])
+  }
 }
