@@ -1,8 +1,6 @@
 package hu.fx.service
 
 import hu.fx.data.FxQuote
-import hu.fx.data.PmQuote
-import hu.fx.data.EmptyQuote
 
 trait GlobalTestData {
 

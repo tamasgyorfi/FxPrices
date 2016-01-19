@@ -1,10 +1,8 @@
 package hu.persistence.data.mongo
 
-import org.scalatest.FunSuite
-import hu.fx.data.FxQuote
-import hu.fx.data.PmQuote
-import hu.fx.data.EmptyQuote
 import org.scalatest.BeforeAndAfter
+import org.scalatest.FunSuite
+
 import hu.fx.data.Quote
 import hu.persistence.FongoFixture
 import hu.persistence.TestData

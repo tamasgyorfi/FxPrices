@@ -33,13 +33,6 @@ case class FxQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, 
   }
 }
 
-case class PmQuote(val ccy2: String, val quoteUnit: Integer, val price: Double, val timestamp: String, val source: String) extends Quote {
-  override def ccy1 = "USD"
-  override def withNewPricePrice(price: Double): Quote = {
-    new PmQuote(ccy2, quoteUnit, price, timestamp, source)
-  }
-}
-
 /**
  * This case class is only used for comparison of two quotes from the point of view of currencies.
  * Note: It does not take into account prices.

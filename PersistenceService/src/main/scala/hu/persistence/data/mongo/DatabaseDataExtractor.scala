@@ -2,14 +2,15 @@ package hu.persistence.data.mongo
 
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
+
 import com.mongodb.casbah.Imports.DBObject
 import com.mongodb.casbah.Imports.mongoNestedDBObjectQueryStatements
 import com.mongodb.casbah.Imports.mongoQueryStatements
 import com.mongodb.casbah.Imports.wrapDBObj
 import com.mongodb.casbah.MongoCollection
 import com.mongodb.casbah.commons.MongoDBObject
+
 import hu.fx.data.FxQuote
-import hu.fx.data.PmQuote
 import hu.fx.data.Quote
 import hu.persistence.api.DataExtractor
 import hu.persistence.api.PortfolioElement
@@ -31,7 +32,7 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
   def compare(thisCcy1: String, thisCcy2: String, thatCcy1: String, thatCcy2: String, source: String, date: LocalDate): Option[QuoteComparison] = {
     val firstQuoteHistory = getCurrencyPairHistory(thisCcy1, thisCcy2, source, date)
     val secondQuoteHistory = getCurrencyPairHistory(thatCcy1, thatCcy2, source, date)
-    
+
     if (firstQuoteHistory.isEmpty && secondQuoteHistory.isEmpty) {
       None
     } else {
@@ -107,31 +108,19 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
     def translate(): Option[Quote] = {
       if (dbObject == null) {
         Option.empty
-      } else if (dbObject.get(DbColumnNames.PRODUCT).toString().contains("Fx")) {
+      } else {
         Option(FxQuote(dbObject.as[String](DbColumnNames.CCY2),
           dbObject.as[Integer](DbColumnNames.QUOTE_UNIT),
           dbObject.as[Double](DbColumnNames.PRICE),
           dbObject.as[String](DbColumnNames.TIMESTAMP),
           dbObject.as[String](DbColumnNames.SOURCE))(dbObject.as[String](DbColumnNames.CCY1)))
-      } else {
-        Option(PmQuote(dbObject.as[String](DbColumnNames.CCY2),
-          dbObject.as[Integer](DbColumnNames.QUOTE_UNIT),
-          dbObject.as[Double](DbColumnNames.PRICE),
-          dbObject.as[String](DbColumnNames.TIMESTAMP),
-          dbObject.as[String](DbColumnNames.SOURCE)))
       }
     }
   }
 
   def getQuote(ccy2: String, date: LocalDate, source: String): DBObject => Quote = {
     dbObject =>
-      {
-        if (dbObject.get(DbColumnNames.PRODUCT).asInstanceOf[String].contains("Fx")) {
-          FxQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source)
-        } else {
-          PmQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source)
-        }
-      }
+      FxQuote(ccy2, 1, dbObject.get(DbColumnNames.AVERAGE).asInstanceOf[Double], date.toString(), source)
   }
 
 }

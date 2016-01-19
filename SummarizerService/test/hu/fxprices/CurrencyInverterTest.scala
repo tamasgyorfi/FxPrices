@@ -1,10 +1,10 @@
 package hu.fxprices
 
+import org.scalatest.Matchers
 import org.scalatest.WordSpecLike
+
 import hu.fx.data.FxQuote
 import hu.fx.data.Quote
-import org.scalatest.Matchers
-import hu.fx.data.PmQuote
 
 class CurrencyInverterTest extends WordSpecLike with Matchers {
 
@@ -29,13 +29,5 @@ class CurrencyInverterTest extends WordSpecLike with Matchers {
 
       expectedResult should equal(inverse)
     }
-
-    "create the inverse prices for Fx instruments and skip Pm instruments" in {
-      val instrumentswithPm = PmQuote("SILVER", 100, 11.876, "", "YAHOO") :: instruments ::: List(PmQuote("GOLD", 100, 11.876, "", "YAHOO"))
-      val inverse: List[Quote] = sut.createInverses(instrumentswithPm)
-
-      expectedResult should equal(inverse)
-    }
-
   }
 }

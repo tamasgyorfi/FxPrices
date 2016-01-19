@@ -2,7 +2,7 @@ package hu.fx.service.price.yahoo
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
-import hu.fx.data.PmQuote
+
 import hu.fx.data.FxQuote
 import hu.fx.service.price.yahoo.xml.QuoteXmlParser
 
@@ -39,7 +39,7 @@ class QuoteXmlParserTest extends FlatSpec with Matchers with TestData {
     result.size should be(1)
     val resultQuote = result(0)
 
-    resultQuote shouldBe an[PmQuote]
+    resultQuote shouldBe an[FxQuote]
     resultQuote.ccy2 should be("SILVER 1 OZ 999 NY")
     resultQuote.ccy1 should be("USD")
     resultQuote.quoteUnit should be(100)
@@ -54,7 +54,7 @@ class QuoteXmlParserTest extends FlatSpec with Matchers with TestData {
     result.size should be(2)
 
     val resultPmQuote = result(0)
-    resultPmQuote shouldBe an[PmQuote]
+    resultPmQuote shouldBe an[FxQuote]
     resultPmQuote.ccy2 should be("SILVER 1 OZ 999 NY")
     resultPmQuote.ccy1 should be("USD")
     resultPmQuote.quoteUnit should be(100)
@@ -79,7 +79,7 @@ class QuoteXmlParserTest extends FlatSpec with Matchers with TestData {
     result.size should be(1)
 
     val resultPmQuote = result(0)
-    resultPmQuote shouldBe an[PmQuote]
+    resultPmQuote shouldBe an[FxQuote]
     resultPmQuote.ccy2 should be("SILVER 1 OZ 999 NY")
     resultPmQuote.ccy1 should be("USD")
     resultPmQuote.quoteUnit should be(100)

@@ -1,13 +1,12 @@
 package hu.persistence
 
-import hu.fx.data.FxQuote
-import hu.fx.data.PmQuote
 import hu.fx.data.EmptyQuote
+import hu.fx.data.FxQuote
 
 trait TestData {
   val validQuotes = List(
     FxQuote("CHF", 1, 32.2, "", "source"),
-    PmQuote("XAU", 1, 11111.1, "", "source"),
+    FxQuote("XAU", 1, 11111.1, "", "source"),
     FxQuote("EUR", 1, 11.99, "", "source")("HUF"))
 
   val mixedQuotes = List(
