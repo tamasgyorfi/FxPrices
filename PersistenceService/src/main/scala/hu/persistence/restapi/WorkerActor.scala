@@ -65,5 +65,14 @@ class WorkerActor(dataExtractor: DataExtractor) extends Actor {
         case ex: Exception => sender ! ComparisonReply(Option.empty, s"Error: Unable to parse request for ${firstCcy1}, ${firstCcy2}, ${secondCcy1}, ${secondCcy2}, ${source} and ${date}")
       }
     }
+    
+    case ProvidersRequest => {
+      try {
+        val result = ProvidersReply(dataExtractor.getAllPriceSources(), "")
+        sender ! result
+      } catch {
+        case ex: Exception => sender ! ProvidersReply(Nil, s"Error: Unable to retrieve currency price providers.")
+      }
+    }
   }
 }

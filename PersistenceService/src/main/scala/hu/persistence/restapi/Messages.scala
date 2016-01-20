@@ -17,3 +17,6 @@ case class PriceReply(quote: Option[Quote], errorMessage: String) extends Messag
 
 case class ComparisonRequest(firstCcy1:String, firstCcy2:String, secondCcy1:String, secondCcy2:String, source:String, date:String) extends Message
 case class ComparisonReply(comparison: Option[QuoteComparison], errorMessage: String) extends Message
+
+case object ProvidersRequest extends Message
+case class ProvidersReply(providers: List[String], errorMessage: String) extends Message

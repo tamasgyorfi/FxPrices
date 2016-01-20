@@ -203,4 +203,12 @@ class DatabaseDataExtractorTest extends WordSpecLike with BeforeAndAfterAll with
       assert(Nil === quotes.get.quote2)
     }
   }
+  
+  "DatabaseDataExtractor -getAllSources- " should {
+    "return all the available provider names" in {
+      val vendors = sut.getAllPriceSources()
+      
+      assert(listEqual(List("APILAYER", "YAHOO", "APROVIDER"), vendors))
+    }
+  }
 }

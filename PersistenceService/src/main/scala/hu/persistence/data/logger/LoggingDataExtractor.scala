@@ -27,4 +27,5 @@ class LoggingDataExtractor extends DataExtractor {
   def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = Option.empty
   def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = Option.empty
 
+  def getAllPriceSources(): List[String] = Nil
 }

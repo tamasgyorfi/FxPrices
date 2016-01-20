@@ -12,4 +12,7 @@ trait Config {
   def messageReceiver: AbstractMessageReceiver
   def monitoringManager: MonitoringManager
   def jmsHandler: JmsHandler
+  
+  def restHost: String
+  def restPort: Int
 }

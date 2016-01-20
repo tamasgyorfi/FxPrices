@@ -3,6 +3,7 @@ package hu.persistence.driver
 import hu.staticdataservice.client.HttpClient
 import hu.fx.config.ConfigReader
 import hu.fx.config.EnvironmentSupplier
+import hu.persistence.restapi.RestApiEndpoint
 
 object ParamsSupplier {
 
@@ -10,13 +11,15 @@ object ParamsSupplier {
 
   val BROKER_ENDPOINT = "jms.broker.endpoint"
   val MONITORING_DESTINATION = "jms.monitoring.destination"
-
+  val REST_ENDPOINT = "persistence.rest.host"
+  val REST_PORT = "persistence.rest.port"
+  
   private val parameters: List[String] =
     List(BROKER_ENDPOINT,
       MONITORING_DESTINATION,
       "jms.persistence.destination",
-      "fxpricer.rest.host",
-      "fxpricer.rest.port")
+      REST_ENDPOINT,
+      REST_PORT)
 
   private val params = {
     val host = configReader.getProperty("staticdata.server.host").getOrElse("localhost")

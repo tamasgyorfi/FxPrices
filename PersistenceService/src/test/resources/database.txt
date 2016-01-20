@@ -184,4 +184,4 @@
 { "_id" : {$oid:"5696775dc3a5ea61a869ef70"}, "ccy1" : "USD", "ccy2" : "KRW", "productType" : "FxQuote", "price" : 1204.234985, "quoteUnit" : 1, "source" : "APILAYER", "timestamp" : "2016-01-11T17:12:13+0000" }
 { "_id" : {$oid:"5696775dc3a5ea61a869ef71"}, "ccy1" : "USD", "ccy2" : "KWD", "productType" : "FxQuote", "price" : 0.30407, "quoteUnit" : 1, "source" : "APILAYER", "timestamp" : "2016-01-13T17:12:13+0000" }
 { "_id" : {$oid:"5696775dc3a5ea61a869ef72"}, "ccy1" : "USD", "ccy2" : "KYD", "productType" : "FxQuote", "price" : 0.819889, "quoteUnit" : 1, "source" : "APILAYER", "timestamp" : "2016-01-13T17:12:13+0000" }
-{ "_id" : {$oid:"5696775dc3a5ea61a869ef73"}, "ccy1" : "USD", "ccy2" : "KZT", "productType" : "FxQuote", "price" : 364.334961, "quoteUnit" : 1, "source" : "APILAYER", "timestamp" : "2016-01-13T17:12:13+0000" }
+{ "_id" : {$oid:"5696775dc3a5ea61a869ef73"}, "ccy1" : "USD", "ccy2" : "KZT", "productType" : "FxQuote", "price" : 364.334961, "quoteUnit" : 1, "source" : "APROVIDER", "timestamp" : "2016-01-13T17:12:13+0000" }

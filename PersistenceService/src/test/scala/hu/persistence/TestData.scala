@@ -2,6 +2,7 @@ package hu.persistence
 
 import hu.fx.data.EmptyQuote
 import hu.fx.data.FxQuote
+import hu.fx.data.Quote
 
 trait TestData {
   val validQuotes = List(
@@ -38,5 +39,13 @@ trait TestData {
   val allUsdCadYahoo = List(CAD1, CAD2, CAD3, CAD4, CAD5, CAD6)
 
   val usdCadYahooOnCertainDate = List(CAD1, CAD2, CAD3)
+
+  def listEqual[T](list1: List[T], list2: List[T]) = {
+    if (list1.size != list2.size) {
+      false
+    } else {
+      list1.forall(list2.contains(_)) && list2.forall(list1.contains(_))
+    }
+  }
 
 }

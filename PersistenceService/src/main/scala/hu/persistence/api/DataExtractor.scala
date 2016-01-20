@@ -16,4 +16,6 @@ trait DataExtractor {
 
   def calculateCurrentPortfolioValue(portfolio: List[PortfolioElement], source: String, resultCurrency: String): Double
   def calculateHistoricalPortfolioValue(portfolio: List[PortfolioElement], source: String, resultCurrency: String, date: LocalDate): Double
+
+  def getAllPriceSources(): List[String]
 }

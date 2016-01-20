@@ -79,14 +79,6 @@ class CompareRouteTest extends FunSuite with CurrencyComparisonRoute with Specs2
     }
   }
 
-  def listEqual(list1: List[Quote], list2: List[Quote]) = {
-    if (list1.size != list2.size) {
-      false
-    } else {
-      list1.forall(list2.contains(_)) && list2.forall(list1.contains(_))
-    }
-  }
-
   def getResponseAsObject(response: String) = {
     QuoteDeserializer.mapper.readValue(response, classOf[ComparisonReply])
   }

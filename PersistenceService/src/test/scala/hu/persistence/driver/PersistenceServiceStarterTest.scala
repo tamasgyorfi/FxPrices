@@ -22,6 +22,7 @@ import hu.persistence.QuoteDeserializer
 import hu.persistence.restapi.CurrencyHistoryReply
 import hu.persistence.restapi.ComparisonReply
 import hu.persistence.api.QuoteComparison
+import hu.persistence.restapi.ProvidersReply
 
 trait TestConfig extends Config with MockitoSugar with FongoFixture {
 
@@ -76,8 +77,12 @@ class PersistenceServiceStarterTest extends WordSpecLike with FongoFixture with 
   private val historyResult = CurrencyHistoryReply(List(inr1, inr2), "")
   private val historyRangeResult = CurrencyHistoryReply(List(inr1, inr2, inr3), "")
   private val comparisonResult = ComparisonReply(Some(new QuoteComparison(List(inr1, inr2), List(huf1, huf2))), "")
-
-  private class Starter() extends PersistenceServiceStarter with TestConfig
+  private val providersResult = ProvidersReply(List("YAHOO"), "")
+  
+  private class Starter() extends PersistenceServiceStarter with TestConfig {
+    val restHost = "localhost"
+    val restPort = 9999;
+  }
   private val sut = new Starter()
 
   "Application" should {
@@ -122,6 +127,11 @@ class PersistenceServiceStarterTest extends WordSpecLike with FongoFixture with 
     "be able to retrieve data as quote comparison" in {
       val comparison = callService("http://localhost:9999/compare/YAHOO?q1_ccy1=USD&q1_ccy2=INR&q2_ccy1=USD&q2_ccy2=HUF&date=2016-01-13")
       assert(comparisonResult === QuoteDeserializer.mapper.readValue(comparison, classOf[ComparisonReply]))
+    }
+    
+    "be able to retrieve all the price providers" in {
+      val comparison = callService("http://localhost:9999/providers")
+      assert(providersResult === QuoteDeserializer.mapper.readValue(comparison, classOf[ProvidersReply]))      
     }
   }
 

@@ -23,4 +23,5 @@ class InMemoryDataExtractor extends DataExtractor {
   def getLowestPrice(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
   def getDailyMean(ccy1: String, ccy2: String, source: String, date: LocalDate): Option[Quote] = ???
 
+  def getAllPriceSources(): List[String] = ???
 }

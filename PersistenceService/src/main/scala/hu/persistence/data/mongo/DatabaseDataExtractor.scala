@@ -15,11 +15,9 @@ import hu.fx.data.Quote
 import hu.persistence.api.DataExtractor
 import hu.persistence.api.PortfolioElement
 import hu.persistence.api.QuoteComparison
-import hu.persistence.api.QuoteComparison
 
 class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
 
-  //TODO: some database-backed implementation here
   private val DESCENDING = -1
   private val ASCENDING = 1
   private def getQueryStatement(ccy1: String, ccy2: String, source: String, date1: String, date2: String) = {
@@ -75,6 +73,15 @@ class DatabaseDataExtractor(collection: MongoCollection) extends DataExtractor {
       .results
       .map(getQuote(ccy2, date, source))
       .find(_ => true)
+  }
+
+  def getAllPriceSources(): List[String] = {
+    collection.aggregate(List(MongoDBObject("$group" -> MongoDBObject("_id" -> DbColumnNames.SOURCE_OPERATOR))))
+      .results
+      .map(_.getAs[String]("_id"))
+      .filter(_.isDefined)
+      .map(_.get)
+      .toList
   }
 
   private def getTopQuote(ccy1: String, ccy2: String, source: String, date: LocalDate, sortMode: Int): Option[Quote] = {

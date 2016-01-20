@@ -1,0 +1,106 @@
+body {
+	background-image: url(../img/background.jpg);
+	background-repeat: no-repeat;
+}
+
+.main {
+	background-color: transparent;
+	border: thin;
+	border-color: orange;
+	height: 40px;
+	width: 400px;
+	border-radius: 5px;
+	border-style: solid;
+	text-align: center;
+	font-size: 16px;
+	text-align: center;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	display: inline-block;
+	color: white;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.center {
+	text-align: center;
+}
+
+.menuitem {
+	background-color: transparent;
+	border: thin;
+	border-color: orange;
+	height: 40px;
+	width: 400px;
+	border-radius: 5px;
+	border-style: solid;
+	text-align: center;
+	font-size: 16px;
+	text-align: center;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	display: list-item;
+	display: none;
+	opacity: 0.5;
+	color: white;
+	margin: auto;
+}
+
+.button {
+	background-color: transparent;
+	border: medium;
+	border-color: orange;
+	border-style: solid;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: bold;
+	border-radius: 5px;
+	display: inline-block;
+}
+
+.h1 {
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	font-size: 45px;
+	color: white;
+	text-align: center;
+	text-transform: uppercase;
+	text-shadow: black;
+}
+
+.h2 {
+	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+	font-size: 20px;
+	color: white;
+	text-align: center;
+	text-transform: lowercase;
+}
+
+.box {
+	background-color: gray;
+	border: thin;
+	border-color: orange;
+	border-radius: 5px;
+	border-style: solid;
+	text-align: center;
+	font-size: 16px;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	display: none;
+	color: white;
+	margin: auto;
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	width: 30em;
+	height: 9em;
+	margin-top: -9em;
+	margin-left: -15em;
+}
