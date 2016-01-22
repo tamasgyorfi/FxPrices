@@ -11,8 +11,7 @@ object ParamsSupplier {
 
   val configReader = new ConfigReader("resources/props_%s.properties")
   private val parameters: List[String] =
-    List("service.yahoo.prices",
-      "service.apilayer.prices",
+    List(
       BROKER_ENDPOINT,
       MONITORING_DESTINATION,
       "jms.persistence.destination",

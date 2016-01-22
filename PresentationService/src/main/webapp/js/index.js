@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 	$.ajax({
 		type : "GET",
-		url : "http://localhost:9999/providers",
+		url : "vendors.html",
 		contentType : "application/json",
 		dataType : "json",
 		success : function(resp) {
@@ -47,9 +47,10 @@ $(document).ready(function() {
 
 			$("#go").click(function() {
 				var source = $("#dropdown").text();
+				window.location.href='/mainpage?provider='+source;
 			})
 		},
-		error : function() {
+		error : function(resp) {
 			$("#error_box").fadeIn("slow", "linear");
 			$("#error_ok").click(function() {
 				$("#error_box").fadeOut("slow", "linear");

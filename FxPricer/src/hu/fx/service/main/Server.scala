@@ -29,8 +29,8 @@ class PriceServiceServer(persistenceRequestSender: RequestSender) extends AkkaSy
 
   private def start() = {
     val future = IO(Http) ? Http.Bind(restServer,
-      ParamsSupplier.getParam("fxpricer.rest.host"),
-      ParamsSupplier.getParam("fxpricer.rest.port").toInt)
+      ParamsSupplier.getParam("fxpricer.rest.host")("localhost"),
+      ParamsSupplier.getParam("fxpricer.rest.port")("8081").toInt)
 
     Await.ready(future, timeout.duration) map {
       case Http.Bound(host) => logger info s"Service successfully bound"

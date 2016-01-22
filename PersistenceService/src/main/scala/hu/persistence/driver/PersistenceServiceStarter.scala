@@ -34,7 +34,7 @@ trait PersistenceServiceStarter extends Config {
 
   private def bindRestService() = {
     val restServer = system.actorOf(Props(new RestApiEndpoint(dataHandlingManager.getDataExtractor())), name = "RequestReceiver")
-    val future = IO(Http) ? Http.Bind(restServer, "localhost", 9999)
+    val future = IO(Http) ? Http.Bind(restServer, restHost, restPort)
 
     Await.ready(future, timeout.duration) map {
       case Http.Bound(host) => logger info s"Service successfully bound"
@@ -49,8 +49,8 @@ trait PersistenceServiceStarter extends Config {
 object PersistenceServerStarter {
   def main(args: Array[String]) = {
     class Starter() extends PersistenceServiceStarter with DatabaseConfig {
-      val restHost = ParamsSupplier.getParam(ParamsSupplier.REST_ENDPOINT)
-      val restPort = ParamsSupplier.getParam(ParamsSupplier.REST_PORT) toInt
+      val restHost = ParamsSupplier.getParam(ParamsSupplier.REST_ENDPOINT)("localhost")
+      val restPort = ParamsSupplier.getParam(ParamsSupplier.REST_PORT)("9999") toInt
     }
     val starter = new Starter()
     val future = starter.startService()

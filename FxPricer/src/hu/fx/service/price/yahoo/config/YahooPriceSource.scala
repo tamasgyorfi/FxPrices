@@ -3,7 +3,7 @@ package hu.fx.service.price.yahoo.config
 import hu.fx.service.config.ParamsSupplier
 
 trait YahooPriceSource {
-  val YAHOO_PRICES = ParamsSupplier.getParam("service.yahoo.prices")
+  val YAHOO_PRICES = "http://finance.yahoo.com/webservice/v1/symbols/allcurrencies/quote"
   val YAHOO_QUOTES_IDENTIFIER = "resources"
   val YAHOO_RATES_IDENTIFIER = "resource"
 
