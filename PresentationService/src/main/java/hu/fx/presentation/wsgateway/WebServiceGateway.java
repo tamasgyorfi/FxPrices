@@ -30,6 +30,13 @@ public class WebServiceGateway {
 						"/getCurrency?ccy1=all"), String.class).getBody();
 	}
 
+	public String getCurrencyPairPrices(String ccy1, String ccy2) {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForEntity(
+				getConnectionString(ConnectionConstants.PRICE_SERVER_HOST, ConnectionConstants.PRICE_SERVER_PORT,
+						"/getCurrency?ccy1="+ccy1+"&ccy2="+ccy2), String.class).getBody();
+	}
+
 	private String getConnectionString(String host, String port, String serviceEndpoint) {
 		return "http://" + parameters.get(host) + ":" + parameters.get(port) + serviceEndpoint;
 	}

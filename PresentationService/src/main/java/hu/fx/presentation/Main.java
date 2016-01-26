@@ -1,6 +1,8 @@
 package hu.fx.presentation;
 
 import hu.fx.presentation.config.ConfigReader;
+import hu.fx.presentation.currencydecoder.CurrenciesDataProvider;
+import hu.fx.presentation.currencydecoder.CurrenciesReader;
 import hu.fx.presentation.wsgateway.WebServiceGateway;
 import hu.staticdataservice.client.HttpClient;
 
@@ -63,4 +65,8 @@ public class Main extends WebMvcConfigurerAdapter {
 		return new WebServiceGateway(client);
 	}
 
+	@Bean
+	public CurrenciesDataProvider provider() {
+		return new CurrenciesDataProvider(new CurrenciesReader());
+	}
 }

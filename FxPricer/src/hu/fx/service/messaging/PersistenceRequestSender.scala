@@ -11,7 +11,7 @@ class PersistenceRequestSender(jmsHandler: JmsHandler) extends RequestSender {
   private val logger = LoggerFactory.getLogger(this.getClass)
 
   def sendRequest(payload: List[Quote]): Boolean = payload match {
-    case Nil => true
+    case _ => true
     case _ => {
       try {
         logger info "Sending persistence request to persistence service."

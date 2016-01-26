@@ -59,7 +59,7 @@ $(document).ready(function() {
 	var display = function(quotes) {
 		allPages = Math.floor(quotes.length / CURRENCIES_PER_PAGE);
 		for ( var i = 0; i < quotes.length; i++) {
-			var currencyPair = quotes[i].ccy1 + " / " + quotes[i].ccy2;
+			var currencyPair = quotes[i].ccy1 + "-" + quotes[i].ccy2;
 			$("#placeholder").before("<div id='" + currencyPair + "' class='currency-button'><br/>" + currencyPair + "<br/> price: " + quotes[i].price + "</p>");
 		}
 
@@ -69,6 +69,10 @@ $(document).ready(function() {
 
 		$(".currency-button").mouseleave(function() {
 			$(this).fadeTo("fast", 0.5);
+		});
+		
+		$(".currency-button").click(function(){
+			window.location.href='/details?currency='+$(this).attr("id");
 		});
 
 		setupPagination();

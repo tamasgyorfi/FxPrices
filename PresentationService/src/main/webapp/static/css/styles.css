@@ -139,6 +139,37 @@ body {
 	display: inline-block;
 }
 
+.currency-button-details {
+	background-color: #54c6fc;
+	border: thin;
+	border-color: black;
+	height: 700px;
+	width: 800px;
+	border-radius: 5px;
+	border-style: solid;
+	font-size: 16px;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 20px;
+	opacity: 0.5;
+	color: white;
+	display: inline-block;
+}
+
+.currency-button-divider {
+	background-color: #54c6fc;
+	border: thin;
+	border-color: black;
+	height: 700px;
+	width: 400px;
+	border-radius: 5px;
+	border-style: solid;
+	font-size: 16px;
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-size: 10px;
+	color: white;
+	display: inline-block;
+}
+
 .holder {
 	font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 	font-size: 20px;
