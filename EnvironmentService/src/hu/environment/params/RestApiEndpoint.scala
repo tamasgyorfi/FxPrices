@@ -30,9 +30,9 @@ class RestApiEndpoint(paramsActor: ActorRef) extends Actor with HttpService {
   }
 
   def route = {
-    path("params") {
+    path("params" / Segment) { (env) =>
       respondWithMediaType(`application/json`) {
-        parameters('env, 'keys) { (env, keys) => get(complete(serveParameterRequest(env, keys))) }
+        parameters('keys) { (keys) => get(complete(serveParameterRequest(env, keys))) }
       }
     }
   }
