@@ -11,6 +11,8 @@ class PersistenceRequestSender(jmsHandler: JmsHandler) extends RequestSender {
   private val logger = LoggerFactory.getLogger(this.getClass)
 
   def sendRequest(payload: List[Quote]): Boolean = payload match {
+    // TODO revert this when messages should be sent:
+    // case Nil => true
     case _ => true
     case _ => {
       try {
