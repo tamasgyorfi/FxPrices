@@ -39,7 +39,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return the history of a currency pair on a specific date with no error") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/KRW?date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(listEqual(allUsdKrwYahoo, getResponseAsObject(response).quotes))
     }
@@ -47,7 +47,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return empty list of a currency pair with no error when there is no data on a date") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-11") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/KRW?date=2001-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
@@ -55,7 +55,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return empty list of a currency pair with no error when the currency pair is unknown - ccy1") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USDDD&ccy2=KRW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USDDD/KRW?date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
@@ -63,7 +63,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return empty list of a currency pair with no error when the currency pair is unknown - ccy2") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KPW&date=2016-01-11") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/KPW?date=2016-01-11") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
@@ -71,7 +71,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return an error message when the date is not parsable") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-111") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/KRW?date=2001-01-111") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, KRW and 2001-01-111") === getResponseAsObject(response))
     }
@@ -79,7 +79,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return the history of a currency pair between two dates with no error") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-15") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/CAD?from=2016-01-11&to=2016-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(listEqual(List(CAD1, CAD2, CAD3, CAD4), getResponseAsObject(response).quotes))
     }
@@ -87,7 +87,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return empty list of a currency pair with no error when there is no data between two dates") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2011-01-11&to=2011-01-15") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/CAD?from=2011-01-11&to=2011-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "") === getResponseAsObject(response))
     }
@@ -95,7 +95,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return an error message when the first date is not parsable") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-111&to=2016-01-15") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/CAD?from=2016-01-111&to=2016-01-15") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, CAD, 2016-01-111 and 2016-01-15") === getResponseAsObject(response))
     }
@@ -103,7 +103,7 @@ class CurrencyHistoryRouteTest extends FunSuite with CurrencyHistoryRoute with S
 
   test("RestApiEndpoint should return an error message when the second date is not parsable") {
 
-    Get("/currencyPairHistory/YAHOO?ccy1=USD&ccy2=CAD&from=2016-01-11&to=2016-01-155") ~> currencyHistoryRoute ~> check {
+    Get("/currencies/YAHOO/USD/CAD?from=2016-01-11&to=2016-01-155") ~> currencyHistoryRoute ~> check {
       val response = responseAs[String]
       assert(CurrencyHistoryReply(Nil, "Error: Unable to parse request for USD, CAD, 2016-01-11 and 2016-01-155") === getResponseAsObject(response))
     }

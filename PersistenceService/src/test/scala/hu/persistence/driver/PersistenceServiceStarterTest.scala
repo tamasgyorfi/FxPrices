@@ -104,28 +104,28 @@ class PersistenceServiceStarterTest extends WordSpecLike with FongoFixture with 
 
     "be able to retrieve data as max price" in {
 
-      val maxPrice = callService("http://localhost:9999/maxPrice/YAHOO?ccy1=USD&ccy2=INR&date=2016-01-13")
+      val maxPrice = callService("http://localhost:9999/currencies/YAHOO/USD/INR/aggregate?filter=max&date=2016-01-13")
       assert(maxPriceResult === QuoteDeserializer.mapper.readValue(maxPrice, classOf[PriceReply]))
     }
 
     "be able to retrieve data as mean price" in {
 
-      val meanPrice = callService("http://localhost:9999/meanPrice/YAHOO?ccy1=USD&ccy2=INR&date=2016-01-13")
+      val meanPrice = callService("http://localhost:9999/currencies/YAHOO/USD/INR/aggregate?filter=avg&date=2016-01-13")
       assert(meanPriceResult === QuoteDeserializer.mapper.readValue(meanPrice, classOf[PriceReply]))
     }
 
     "be able to retrieve data as quote history on a specific date" in {
-      val history = callService("http://localhost:9999/currencyPairHistory/YAHOO?ccy1=USD&ccy2=INR&date=2016-01-13")
+      val history = callService("http://localhost:9999/currencies/YAHOO/USD/INR?date=2016-01-13")
       assert(historyResult === QuoteDeserializer.mapper.readValue(history, classOf[CurrencyHistoryReply]))
     }
 
     "be able to retrieve data as quote history between two dates" in {
-      val historyRange = callService("http://localhost:9999/currencyPairHistory/YAHOO?ccy1=USD&ccy2=INR&from=2016-01-13&to=2016-01-14")
+      val historyRange = callService("http://localhost:9999/currencies/YAHOO/USD/INR?from=2016-01-13&to=2016-01-14")
       assert(historyRangeResult === QuoteDeserializer.mapper.readValue(historyRange, classOf[CurrencyHistoryReply]))
     }
 
     "be able to retrieve data as quote comparison" in {
-      val comparison = callService("http://localhost:9999/compare/YAHOO?q1_ccy1=USD&q1_ccy2=INR&q2_ccy1=USD&q2_ccy2=HUF&date=2016-01-13")
+      val comparison = callService("http://localhost:9999/currencies/YAHOO/comparison?q1_ccy1=USD&q1_ccy2=INR&q2_ccy1=USD&q2_ccy2=HUF&date=2016-01-13")
       assert(comparisonResult === QuoteDeserializer.mapper.readValue(comparison, classOf[ComparisonReply]))
     }
     

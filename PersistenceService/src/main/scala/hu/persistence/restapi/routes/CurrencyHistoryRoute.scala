@@ -17,9 +17,9 @@ trait CurrencyHistoryRoute extends Route {
   def currencyHistoryRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("currencyPairHistory" / Segment) { (source) =>
+        path("currencies" / Segment/Segment /Segment) { (source, ccy1, ccy2) =>
           {
-            parameter('ccy1, 'ccy2, 'date) { (ccy1: String, ccy2: String, date: String) =>
+            parameter('date) { (date: String) =>
               complete {
                 (newWorker ? CurrencyHistoryRequest(ccy1, ccy2, source, date)).mapTo[CurrencyHistoryReply].map { x => ObjMapper.objectMapper.writeValueAsString(x) }
               }
@@ -28,9 +28,9 @@ trait CurrencyHistoryRoute extends Route {
         }
       } ~
       respondWithMediaType(`application/json`) {
-        path("currencyPairHistory" / Segment) { (source) =>
+        path("currencies" / Segment/Segment /Segment) { (source, ccy1, ccy2) =>
           {
-            parameter('ccy1, 'ccy2, 'from, 'to) { (ccy1: String, ccy2: String, from: String, to: String) =>
+            parameter('from, 'to) { (from: String, to: String) =>
               complete {
                 (newWorker ? CurrencyHistoryRequestRange(ccy1, ccy2, source, from, to)).mapTo[CurrencyHistoryReply].map { x => ObjMapper.objectMapper.writeValueAsString(x) }
               }

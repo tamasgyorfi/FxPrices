@@ -21,7 +21,7 @@ trait CurrencyComparisonRoute extends Route {
   def comparisonRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("compare" / Segment) { (source) =>
+        path("currencies" / Segment/"comparison") { (source) =>
           {
             parameter('q1_ccy1, 'q1_ccy2, 'q2_ccy1, 'q2_ccy2, 'date) { (firstCcy1: String, firstCcy2: String, secondCcy1: String, secondCcy2: String, date: String) =>
               complete {

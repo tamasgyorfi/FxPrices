@@ -20,38 +20,20 @@ trait PricesRoute extends Route {
   def pricesRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("maxPrice" / Segment) { (source) =>
+        path("currencies" / Segment/ Segment/ Segment/"aggregate") { (source, ccy1, ccy2) =>
           {
-            parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
+            parameter('filter, 'date) { (theType, date) =>
               complete {
-                (newWorker ? MaxPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
-              }
-            }
-          }
-        }
-      } ~
-        respondWithMediaType(`application/json`) {
-          path("minPrice" / Segment) { (source) =>
-            {
-              parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
-                complete {
-                  (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
-                }
-              }
-            }
-          }
-        } ~
-        respondWithMediaType(`application/json`) {
-          path("meanPrice" / Segment) { (source) =>
-            {
-              parameter('ccy1, 'ccy2, 'date) { (ccy1, ccy2, date) =>
-                complete {
-                  (newWorker ? MeanPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                theType.toLowerCase() match {
+                  case "min" => (newWorker ? MinPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                  case "avg" => (newWorker ? MeanPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
+                  case "max" => (newWorker ? MaxPriceRequest(ccy1, ccy2, source, date)).mapTo[PriceReply].map { reply => ObjMapper.objectMapper.writeValueAsString(reply) }
                 }
               }
             }
           }
         }
+      }
     }
   }
 }

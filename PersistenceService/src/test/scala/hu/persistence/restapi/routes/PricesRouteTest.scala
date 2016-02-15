@@ -42,35 +42,35 @@ class PricesRouteTest extends WordSpecLike with PricesRoute with Specs2RouteTest
   "MaxPrice route" should {
 
     "return the currency pair's highest value with no error" in {
-      Get("/maxPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=max&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(Some(KRW3), "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when there is no data on a date" in {
-      Get("/maxPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=max&date=2001-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy1" in {
-      Get("/maxPrice/YAHOO?ccy1=USDDD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USDDD/KRW/aggregate?filter=max&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy2" in {
-      Get("/maxPrice/YAHOO?ccy1=USD&ccy2=KPW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KPW/aggregate?filter=max&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return an error message when the date is not parsable" in {
-      Get("/maxPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-111") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=max&date=2001-01-111") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, ERROR_MESSAGE) === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
@@ -80,35 +80,35 @@ class PricesRouteTest extends WordSpecLike with PricesRoute with Specs2RouteTest
   "MinPrice route" should {
 
     "return the currency pair's lowest value with no error" in {
-      Get("/minPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=min&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(Some(KRW8), "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when there is no data on a date" in {
-      Get("/minPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=min&date=2001-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy1" in {
-      Get("/minPrice/YAHOO?ccy1=USDDD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USDDD/KRW/aggregate?filter=min&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy2" in {
-      Get("/minPrice/YAHOO?ccy1=USD&ccy2=KPW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KPW/aggregate?filter=min&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return an error message when the date is not parsable" in {
-      Get("/minPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-111") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=max&date=2001-01-111") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, ERROR_MESSAGE) === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
@@ -118,35 +118,35 @@ class PricesRouteTest extends WordSpecLike with PricesRoute with Specs2RouteTest
   "DailyMeanPrice route" should {
 
     "return the currency pair's mean value with no error" in {
-      Get("/meanPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=avg&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(Some(FxQuote("KRW", 1, 2972.0769026249995, "2016-01-11", "YAHOO")), "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when there is no data on a date" in {
-      Get("/meanPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=avg&date=2001-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy1" in {
-      Get("/meanPrice/YAHOO?ccy1=USDDD&ccy2=KRW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USDDD/KRW/aggregate?filter=avg&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return null for a currency pair with no error when the currency pair is unknown - ccy2" in {
-      Get("/meanPrice/YAHOO?ccy1=USD&ccy2=KPW&date=2016-01-11") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KPW/aggregate?filter=avg&date=2016-01-11") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, "") === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
     }
 
     "return an error message when the date is not parsable" in {
-      Get("/meanPrice/YAHOO?ccy1=USD&ccy2=KRW&date=2001-01-111") ~> pricesRoute ~> check {
+      Get("/currencies/YAHOO/USD/KRW/aggregate?filter=avg&date=2001-01-111") ~> pricesRoute ~> check {
         val response = responseAs[String]
         assert(PriceReply(None, ERROR_MESSAGE) === QuoteDeserializer.mapper.readValue(response, classOf[PriceReply]))
       }
