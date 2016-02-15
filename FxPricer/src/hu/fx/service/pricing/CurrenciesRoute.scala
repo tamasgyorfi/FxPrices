@@ -31,18 +31,13 @@ trait CurrenciesRoute extends HttpService {
   def currenciesRoute = {
     get {
       respondWithMediaType(`application/json`) {
-        path("getCurrency") {
-          parameter('ccy1, 'ccy2.?) { (ccy1, ccy2) => complete { handleCurrencyRequests(ccy1, ccy2) }
+        path("currencies" / Segment / Segment) { (ccy1, ccy2) =>
+          complete { (appDriver ? QuoteApiRequest(ccy1, ccy2)).mapTo[QuoteApiReply].map { x => objectMapper.writeValueAsString(x) } }
+        } ~
+          path("currencies") {
+            complete { (appDriver ? AllQuotesApiRequest).mapTo[AllQuotesApiReply].map { x => objectMapper.writeValueAsString(x) } }
           }
-        }
       }
-    }
-  }
-
-  private def handleCurrencyRequests(ccy1: String, ccy2: Option[String]) = {
-    ccy1.toUpperCase() match {
-      case "ALL" => (appDriver ? AllQuotesApiRequest).mapTo[AllQuotesApiReply].map { x => objectMapper.writeValueAsString(x) }
-      case _     => (appDriver ? QuoteApiRequest(ccy1, ccy2.getOrElse("EUR"))).mapTo[QuoteApiReply].map { x => objectMapper.writeValueAsString(x) }
     }
   }
 }

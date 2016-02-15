@@ -24,7 +24,7 @@ class CurrenciesRouteTest extends FunSuite with Specs2RouteTest with HttpService
   val allCurrencyPairs = """{"quotes":{"YAHOO":[{"ccy2":"KRW","quoteUnit":0,"price":1204.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"HUF","quoteUnit":0,"price":104.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"CHF","quoteUnit":0,"price":120.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"},{"ccy2":"SEK","quoteUnit":0,"price":124.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"YAHOO","ccy1":"USD"}],"APILAYER":[{"ccy2":"KRW","quoteUnit":1,"price":14.234985,"timestamp":"2016-01-11T17:12:13+0000","source":"APILAYER","ccy1":"USD"},{"ccy2":"HUF","quoteUnit":0,"price":1.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"APILAYER","ccy1":"USD"},{"ccy2":"CHF","quoteUnit":0,"price":12.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"APILAYER","ccy1":"USD"},{"ccy2":"SEK","quoteUnit":0,"price":104.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"APILAYER","ccy1":"USD"}],"ABS":[{"ccy2":"KRW","quoteUnit":1,"price":2204.234985,"timestamp":"2016-01-11T17:12:13+0000","source":"ABS","ccy1":"USD"},{"ccy2":"HUF","quoteUnit":0,"price":204.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"ABS","ccy1":"USD"},{"ccy2":"CHF","quoteUnit":0,"price":220.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"ABS","ccy1":"USD"},{"ccy2":"SEK","quoteUnit":0,"price":224.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"ABS","ccy1":"USD"}],"HLC":[{"ccy2":"KRW","quoteUnit":1,"price":24.234985,"timestamp":"2016-01-11T17:12:13+0000","source":"HLC","ccy1":"USD"},{"ccy2":"HUF","quoteUnit":0,"price":42.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"HLC","ccy1":"USD"},{"ccy2":"CHF","quoteUnit":0,"price":10.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"HLC","ccy1":"USD"},{"ccy2":"SEK","quoteUnit":0,"price":1.14502,"timestamp":"2016-01-11T15:11:09+0000","source":"HLC","ccy1":"USD"}]},"errorMessage":""}"""
 
   test("RestApiEndpoint shoud be able to expose rest services for one currency pair") {
-    Get("/getCurrency?ccy1=USD&ccy2=KRW") ~> currenciesRoute ~> check {
+    Get("/currencies/USD/KRW") ~> currenciesRoute ~> check {
       val response = responseAs[String]
 
       assert(oneCurrencyPair === response)
@@ -32,7 +32,7 @@ class CurrenciesRouteTest extends FunSuite with Specs2RouteTest with HttpService
   }
 
   test("RestApiEndpoint shoud be able to expose rest services for all currency pairs") {
-    Get("/getCurrency?ccy1=ALL") ~> currenciesRoute ~> check {
+    Get("/currencies") ~> currenciesRoute ~> check {
       val response = responseAs[String]
 
       assert(allCurrencyPairs === response)
